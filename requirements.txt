@@ -3,7 +3,7 @@ Flask==2.0.3
 itsdangerous==2.1.1
 Jinja2==3.0.3
 MarkupSafe==2.1.1
-mysqlclient==2.1.0
+# mysqlclient==2.1.0
 PyMySQL==1.0.2
 SQLAlchemy==1.4.32
 Werkzeug==2.0.3
