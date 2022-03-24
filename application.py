@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import json
 import db
 # import db
 import datetime 
@@ -10,7 +11,8 @@ def say_hello(username = "World"):
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 
-
+################################################################
+###  Web Page endpoints
 @application.route("/")
 def Index():
     data={
@@ -18,49 +20,48 @@ def Index():
     }
     return render_template("index.html",data=data) 
 
-
+################################################################
+###  AJAX endpoints
+@application.route('/ajaxGet', methods=["GET"])
+def AjaxGet():
+    action = request.args.get('action')
+    if action == "add": # Adding a new record
+        PersonID = request.args.get('PersonID')
+        jsonData = json.loads(request.args.get('JSON'))
+        db.add({
+            "PersonID":PersonID,
+            "json": jsonData
+        })
+    return "done"
+################################################################
+### DB testing endpoints
 @application.route('/add')
-def Add():
-    json_to_add = str(datetime.datetime.now())
-    db.add(json_to_add)
-    return "Added " + json_to_add
+def Add(data):
+    db.add(data)
+    return "Added " + data
 
 @application.route('/view')
 def View():
     records = db.view()
-    return str([r.json for r in records])
+    return str([r for r in records])
 
 @application.route('/reset')
 def Reset():
     db.reset()
     return "DB Reset"
 
+@application.route('/drop')
+def Drop():
+    db.dropTable()
+    return "DB Table Dropped"
 
-# run the app.
+@application.route('/create')
+def Create():
+    db.createTable()
+    return "DB Table Created"
+
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
     application.debug = True
     application.run()
-
-
-# from flask import Flask, render_template
-# # from db import add, view    
-# import datetime 
-
-
-# application = Flask(__name__)
-
-# @application.route("/")
-# def Index():
-#     data={
-#         "name":"Tak"
-#     }
-#     return render_template("index.html",data=data) 
-
-# # run the application.
-# if __name__ == "__main__":
-#     # Setting debug to True enables debug output. This line should be
-#     # removed before deploying a production application.
-#     application.debug = True
-#     application.run()
