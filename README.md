@@ -74,6 +74,15 @@ If you want to deploy currently staged files without changing the repository
 If you want to deploy the latest commit
 > `eb deploy`
 
+5. Other useful commands of EB CLI
+
+To check the latest events on EB
+> `eb logs`  
+
+To open the web page
+> `eb open`
+
+For other commands, check out AWS EB [developer guide](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-getting-started.html)
 
 
 # ETC 
