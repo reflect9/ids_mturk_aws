@@ -3,29 +3,29 @@ from flask import Flask, render_template
 import datetime 
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
-@app.route("/")
+@application.route("/")
 def Index():
     data={
         "name":"Tak"
     }
     return render_template("index.html",data=data) 
 
-# @app.route('/add')
+# @application.route('/add')
 # def Add():
 #     json_to_add = str(datetime.datetime.now())
 #     add(json_to_add)
 #     return "Added " + json_to_add
 
-# @app.route('/view')
+# @application.route('/view')
 # def View():
 #     records = view()
 #     return str([r.json for r in records])
 
-# run the app.
+# run the application.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
-    # removed before deploying a production app.
-    app.debug = True
-    app.run()
+    # removed before deploying a production application.
+    application.debug = True
+    application.run()
