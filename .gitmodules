@@ -1,0 +1,3 @@
+[submodule "2022DS"]
+	path = 2022DS
+	url = git@github.com:KimSeonGyeom/2022DS.git
