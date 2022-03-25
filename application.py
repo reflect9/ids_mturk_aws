@@ -7,20 +7,20 @@ import datetime
 
 
 # EB looks for an 'application' callable by default.
-application = Flask(__name__, static_url_path='', static_folder='2022DS/build')
+application = Flask(__name__, static_url_path='', static_folder='2022DS_build')
 application.secret_key = "super secret key"
 CORS(application)
 
 ################################################################
 ###  Web Page endpoints
-# @application.route("/")
-# def Index():
-#     if 'PersonID' not in session:
-#         session["PersonID"] = str(uuid.uuid4())[:8]
-#     data={
-#         "name":"Tak"
-#     }
-#     return render_template("index.html",data=data) 
+@application.route("/")
+def Index():
+    if 'PersonID' not in session:
+        session["PersonID"] = str(uuid.uuid4())[:8]
+    data={
+        "name":"Tak"
+    }
+    return render_template("index.html",data=data) 
 
 @application.route("/story")
 def Story():
