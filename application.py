@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, send_from_directory
 from flask_cors import CORS
-import json, uuid
+import json, uuid, random
 import db
 # import db
 import datetime 
@@ -11,13 +11,21 @@ application = Flask(__name__, static_url_path='', static_folder='2022DS/build')
 application.secret_key = "super secret key"
 CORS(application)
 
+""" fetchTask is a temporary solution for fetching task per participant
+    Later we will populat task lists in DB
+"""
+def fetchTask():
+    # Below is two possible tasks for a participant (will be replaced with pre-populated DB)
+    possibleTasks = [[100,101,110], [110,101,100]]  # 100:Static, 101:Animated, 110:Immersive
+    return random.sample(possibleTasks,1)[0]
+
 ################################################################
 ###  Web Page endpoints
 @application.route("/")
 def Index():
     session["PersonID"] = str(uuid.uuid4())[:8]
     session["StoryID"] = 0
-    session["StoryType"] = 110
+    session["Task"] = fetchTask()
     return render_template("index.html") 
 
 @application.route("/story")
@@ -48,6 +56,18 @@ def AjaxGet():
             else:
                 response[k] = "There is no session variable for " + k
         return json.dumps(response)
+    elif action == "fetchNextStory": # ReactJS is getting information of the next story
+        currentIDX = session["StoryID"]
+        if currentIDX < len(session["Task"]):
+            storyInfo = session["Task"][currentIDX]
+            session["StoryID"] = session["StoryID"] + 1 
+            return json.dumps({
+                "task":session["Task"],
+                "nextStory":storyInfo,  # either 100,101,110 (type of the current story)
+                "StoryID":currentIDX
+            })
+        else:
+            return "End of Task"
     else:
         return "?"
     
