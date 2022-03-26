@@ -1,26 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>IDS User Study</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css')}}">
-  </head>
-  <body>
-	<script src="{{ url_for('static',filename='js/index.js')}}"></script>
+    <style>
+        html,
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
+        .page {
+            margin: 40px auto;
+            width: 1024px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
     <!-- INTRODUCTION PART : Shown first -->
     <div class="intro page">
-        <h1> TITLE OF THE STUDY </h1>
+        <h1> TITLE OF THE STUDY</h1>
         <p> Basic Description : This study is blahblah </p>
-        <hr/>
-        <h2> Tutorial</h2> 
+        <hr />
+        <h2> Tutorial</h2>
         <p> Instruction of the tutorial</p>
 
         <script>
-            function start(){
+            function start() {
                 log('start');
                 document.location.href = "../story?sid=1";
             }
@@ -35,13 +49,13 @@
     <div class="story page">
         <h1 class="title"></h1>
         <p class="instruction"></p>
-        <hr/>
+        <hr />
         <div class="story_content">
             Story content here
         </div>
         <script>
-            function handlerStoryFinished(){
-                log('story finished: '+storyIdx);
+            function handlerStoryFinished() {
+                log('story finished: ' + storyIdx);
                 proceedToQuiz();
             }
         </script>
@@ -54,13 +68,13 @@
     <div class="quiz page">
         <h1> Quiz A: ___ </h1>
         <p> blahblah </p>
-        <hr/>
+        <hr />
         <div class="quiz_content">
             Quizes here
         </div>
         <script>
-            function handlerQuizFinished(){
-                log('quiz finished: '+storyIdx);
+            function handlerQuizFinished() {
+                log('quiz finished: ' + storyIdx);
                 proceedToNextStory();
             }
         </script>
@@ -71,14 +85,14 @@
 
     <!-- POST QUESTIONNAIRE PART -->
     <div class="post page">
-        <h1> Survey  </h1>
+        <h1> Survey </h1>
         <p> Thank you so much and blahblah.. Please answer the following questions... </p>
-        <hr/>
+        <hr />
         <div class="survey_content">
             Survey Content here
         </div>
         <script>
-            function handlerFinishStudy(){
+            function handlerFinishStudy() {
                 log('post questionnaire finished: ');
                 proceedToBye();
             }
@@ -87,6 +101,87 @@
             Finish Study
         </button>
     </div>
-    
-  </body>
+
+</body>
+
+
+<script>
+    let stories; // This will contain three(?) stories for the current participant. 
+    let storyIdx = 0; // Index number of the current story 
+
+    $.ready(() => {
+        $(".page").addClass("hidden");
+        $(".intro").removeClass("hidden");
+    });
+
+    function ajaxGet(reqJson, callback) {
+        /* Example usage. 
+          ajaxGet({"action":"add", "JSON":JSON.stringify({'a':1234,'b':234})})
+        */
+        $.getJSON('ajaxGet', reqJson, callback);
+    }
+
+    function fetchStories() {
+        // This method will be called once, when a new participant begins
+        ajaxGet({
+            "action": "fetchStories"
+        }, (data) => {
+            stories = data.stories;
+        });
+    }
+
+    function renderStoryAndQuestion(si) {
+        // For the given story index (si), it renders the story and question in the corresponding div
+        $(".story_content").html(stories(si).story.html);
+        $(".quiz_content").html(stories(si).quiz.html);
+
+        // Showing the story page only
+        $(".page").addClass("hidden");
+        $(".story").removeClass("hidden");
+    }
+
+    function proceedToQuiz() {
+        $(".page").addClass("hidden");
+        $(".quiz").removeClass("hidden");
+    }
+
+    function proceedToNextStory() {
+        storyIdx++;
+        if (storyIdx == stories.length) {
+            proceedToPostQuestionnaire();
+        } else {
+            renderStoryAndQuestion(storyIdx);
+        }
+    }
+
+    function proceedToPostQuestionnaire() {
+        $(".page").addClass("hidden");
+        $(".post").removeClass("hidden");
+    }
+
+    function proceedToBye() {
+
+    }
+
+    function log(e) {
+        if (e == "start") {
+            // Pressing Start button
+            let jsonString = JSON.stringify({
+                "event": "Start Button"
+            });
+            ajaxGet({
+                "action": "add",
+                "JSON": jsonString
+            }, (data) => {
+                console.log(data);
+            });
+        } else if (e == "a specific event") {
+            // DEFINE WHAT TO LOG
+        } else if (e == "another specific event") {
+            // DEFINE WHAT TO LOG
+        }
+    }
+
+</script>
+
 </html>

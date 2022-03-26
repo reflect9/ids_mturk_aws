@@ -7,7 +7,7 @@ import datetime
 
 
 # EB looks for an 'application' callable by default.
-application = Flask(__name__, static_url_path='', static_folder='2022DS_build')
+application = Flask(__name__, static_url_path='', static_folder='2022DS/build')
 application.secret_key = "super secret key"
 CORS(application)
 
@@ -15,17 +15,14 @@ CORS(application)
 ###  Web Page endpoints
 @application.route("/")
 def Index():
-    if 'PersonID' not in session:
-        session["PersonID"] = str(uuid.uuid4())[:8]
-    data={
-        "name":"Tak"
-    }
-    return render_template("index.html",data=data) 
+    session["PersonID"] = str(uuid.uuid4())[:8]
+    session["StoryID"] = 0
+    session["StoryType"] = 110
+    return render_template("index.html") 
 
 @application.route("/story")
 def Story():
     return send_from_directory(application.static_folder,'index.html')
-    # return render_template("story.html") 
 
 ################################################################
 ###  AJAX endpoints
@@ -39,7 +36,21 @@ def AjaxGet():
             "PersonID":PersonID,
             "json": jsonData
         })
-    return "done"
+        return "done"
+    elif action == "getSessionVar": # Getting the current session's variable
+        response = { }
+        ks = request.args.get("keys").split(",")
+        for k in ks:
+            print(k)
+            print(session[k])
+            if k in session:
+                response[k] = session[k]
+            else:
+                response[k] = "There is no session variable for " + k
+        return json.dumps(response)
+    else:
+        return "?"
+    
 ################################################################
 ### DB testing endpoints
 @application.route('/add')
