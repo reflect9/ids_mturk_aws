@@ -1,4 +1,6 @@
+from curses import meta
 from sqlalchemy import create_engine
+from sqlalchemy.schema import MetaData
 from sqlalchemy.sql import text 
 import datetime, json
 
@@ -20,6 +22,8 @@ def add(data):
 
 def view():
     with engine.connect() as conn:
+        # PATTERN 1. GETTING COLUMN NAMES
+        # return conn.execute(text("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = Database() AND TABLE_NAME = 'ids'"))
         return conn.execute(text("SELECT * FROM ids"))
 
 def reset():
@@ -34,5 +38,5 @@ def dropTable():
 
 def createTable():
     with engine.connect() as conn:
-        conn.execute(text("CREATE TABLE ids (PersonID varchar(255), datetime Timestamp, json JSON)"))
+        conn.execute(text("CREATE TABLE ids (PersonID varchar(255), Timestamp datetime, json JSON)"))
         conn.commit()

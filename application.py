@@ -7,7 +7,7 @@ import datetime
 
 
 # EB looks for an 'application' callable by default.
-application = Flask(__name__, static_url_path='', static_folder='2022DS/build')
+application = Flask(__name__, static_url_path='', static_folder='2022DS_build')
 application.secret_key = "super secret key"
 CORS(application)
 
@@ -37,9 +37,10 @@ def Story():
 @application.route('/ajaxGet', methods=["GET"])
 def AjaxGet():
     action = request.args.get('action')
-    if action == "add": # Adding a new record
+    if action == "log": # Adding a new record
         PersonID = session['PersonID']
-        jsonData = json.loads(request.args.get('JSON'))
+        print (request.args.get('json'))
+        jsonData = json.loads(request.args.get('json'))
         db.add({
             "PersonID":PersonID,
             "json": jsonData
@@ -81,7 +82,11 @@ def Add(data):
 @application.route('/view')
 def View():
     records = db.view()
-    return str([r for r in records])
+    results = []
+    for r in records:
+        results.append([r.PersonID, r.Timestamp, r.json])
+        print (r.json)
+    return str(results)
 
 @application.route('/reset')
 def Reset():
