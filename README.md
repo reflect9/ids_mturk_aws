@@ -1,8 +1,19 @@
 # IDS Mturk experiment
 For the Immersive Data Storytelling project, this repository contains source code of a web application that runs on AWS Elastic Beanstalk. 
 
-# Usage
-## How to run locally
+# AWS EB Endpoint
+This service is running at an endpoint of AWS Elastic Beanstalk <br/>
+http://ids-mturk-env.eba-9akq2shk.ap-northeast-2.elasticbeanstalk.com/
+
+## Endpoint Usage
+### Instruction page
+> http://ids-mturk-env.eba-9akq2shk.ap-northeast-2.elasticbeanstalk.com/
+### View latest log data
+> http://ids-mturk-env.eba-9akq2shk.ap-northeast-2.elasticbeanstalk.com/view
+### Reset log database
+> http://ids-mturk-env.eba-9akq2shk.ap-northeast-2.elasticbeanstalk.com/reset
+
+# How to run locally
 1. Clone or download this repository
 > `git clone git@github.com:reflect9/ids_mturk_aws.git`
 2. Install required libraries
@@ -23,6 +34,28 @@ Debugger is active!
 Debugger PIN: 127-277-866
 </pre>
 5. Open the local page on browser (http://127.0.0.1:5000/)
+
+## How to update 2022DS_build (ReactJS part of the survey)
+1. Clone the 2022DS repository
+> `https://github.com/KimSeonGyeom/2022DS`
+2. Update the packages.json so that the BUILD_PATH of the build configuration points to the `2022DS_build` folder
+<pre>
+"scripts": {
+    "start": "react-scripts start",
+    "build": "BUILD_PATH='../ids_mturk/2022DS_build' react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "watch": "npm-watch"
+},
+</pre>
+3. Run build (or watch to automatically build whenever the reactjs code updates)   
+> `npm run build`
+
+or
+
+> `npm run watch`
+
+---
 
 ## How to deploy on AWS EB
 1. Install AWS EB CLI (https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3.html)
