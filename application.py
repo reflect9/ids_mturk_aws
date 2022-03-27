@@ -42,6 +42,7 @@ def AjaxGet():
         PersonID = session['PersonID']
         print (request.args.get('json'))
         jsonData = json.loads(request.args.get('json'))
+        jsonData["event"] = "log"
         db.add({
             "PersonID":PersonID,
             "json": jsonData
@@ -64,6 +65,14 @@ def AjaxGet():
             storyInfo = session["Task"][currentIDX]
             session["StoryID"] = session["StoryID"] + 1 
             PersonID = session['PersonID']
+            db.add({
+                "PersonID":session["PersonID"],
+                "json": {
+                    "event":"fetchStory",
+                    "storyIDS":currentIDX,     
+                    "storyInfo":storyInfo
+                }
+            })
             return json.dumps({
                 "PersonID": PersonID, 
                 "task":session["Task"],
@@ -71,6 +80,12 @@ def AjaxGet():
                 "StoryID":currentIDX
             })
         else:
+            db.add({
+                "PersonID":session["PersonID"],
+                "json": {
+                    "event":"completed"
+                }
+            })
             return json.dumps({
                 "CompletionCode": session["CompletionCode"],
                 "nextStory":0
