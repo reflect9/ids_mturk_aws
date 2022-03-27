@@ -36,72 +36,14 @@
         <script>
             function start() {
                 log('start');
-                document.location.href = "../story?sid=1";
+                document.location.href = "../story";
             }
         </script>
+        <hr/>
         <button onclick="start()">
-            Start
+            Start Task
         </button>
     </div>
-
-
-    <!-- STORY PART -->
-    <div class="story page">
-        <h1 class="title"></h1>
-        <p class="instruction"></p>
-        <hr />
-        <div class="story_content">
-            Story content here
-        </div>
-        <script>
-            function handlerStoryFinished() {
-                log('story finished: ' + storyIdx);
-                proceedToQuiz();
-            }
-        </script>
-        <button onclick="handlerStoryFinished()">
-            Quiz
-        </button>
-    </div>
-
-    <!-- QUIZ PART -->
-    <div class="quiz page">
-        <h1> Quiz A: ___ </h1>
-        <p> blahblah </p>
-        <hr />
-        <div class="quiz_content">
-            Quizes here
-        </div>
-        <script>
-            function handlerQuizFinished() {
-                log('quiz finished: ' + storyIdx);
-                proceedToNextStory();
-            }
-        </script>
-        <button onclick="handlerQuizFinished()">
-            Finish Quiz
-        </button>
-    </div>
-
-    <!-- POST QUESTIONNAIRE PART -->
-    <div class="post page">
-        <h1> Survey </h1>
-        <p> Thank you so much and blahblah.. Please answer the following questions... </p>
-        <hr />
-        <div class="survey_content">
-            Survey Content here
-        </div>
-        <script>
-            function handlerFinishStudy() {
-                log('post questionnaire finished: ');
-                proceedToBye();
-            }
-        </script>
-        <button onclick="handlerFinishStudy()">
-            Finish Study
-        </button>
-    </div>
-
 </body>
 
 

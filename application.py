@@ -24,6 +24,7 @@ def fetchTask():
 @application.route("/")
 def Index():
     session["PersonID"] = str(uuid.uuid4())[:8]
+    session["CompletionCode"] = str(uuid.uuid4())[:4]
     session["StoryID"] = 0
     session["Task"] = fetchTask()
     return render_template("index.html") 
@@ -62,13 +63,18 @@ def AjaxGet():
         if currentIDX < len(session["Task"]):
             storyInfo = session["Task"][currentIDX]
             session["StoryID"] = session["StoryID"] + 1 
+            PersonID = session['PersonID']
             return json.dumps({
+                "PersonID": PersonID, 
                 "task":session["Task"],
                 "nextStory":storyInfo,  # either 100,101,110 (type of the current story)
                 "StoryID":currentIDX
             })
         else:
-            return "End of Task"
+            return json.dumps({
+                "CompletionCode": session["CompletionCode"],
+                "nextStory":0
+            })
     else:
         return "?"
     
