@@ -1,5 +1,5 @@
 # IDS Mturk experiment
-For the Immersive Data Storytelling project, this repository contains source code of a web application that runs on AWS Elastic Beanstalk. 
+For the Immersive Data Storytelling project, this repository contains source code of a web application that runs on AWS Elastic Beanstalk.
 
 # AWS EB Endpoint
 This service is running at an endpoint of AWS Elastic Beanstalk <br/>
@@ -22,13 +22,15 @@ http://ids-mturk-env.eba-9akq2shk.ap-northeast-2.elasticbeanstalk.com/
 > `export FLASK_APP=application.py`
 
 > `export FLASK_ENV=development`
+
+> `use set instead of export with Window`
 4. Run Flask locally
 > `flask run`
 <pre>
-Serving Flask app 'application.py' (lazy loading) 
-Environment: development 
-Debug mode: on 
-Running on http://127.0.0.1:5000/ (Press CTRL+C to quit) 
+Serving Flask app 'application.py' (lazy loading)
+Environment: development
+Debug mode: on
+Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 Restarting with stat
 Debugger is active!
 Debugger PIN: 127-277-866
@@ -42,7 +44,7 @@ Debugger PIN: 127-277-866
 <pre>
 "scripts": {
     "start": "react-scripts start",
-    "build": "BUILD_PATH='../ids_mturk/2022DS_build' react-scripts build",
+    "build": "BUILD_PATH='../ids_mturk_aws/2022DS_build' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "watch": "npm-watch"
@@ -99,7 +101,7 @@ Changes to be committed:
 	modified:   requirements.txt
 </pre>
 
-4. Deploy on EB 
+4. Deploy on EB
 
 If you want to deploy currently staged files without changing the repository
 > `eb deploy --staged`
@@ -118,9 +120,9 @@ To open the web page
 For other commands, check out AWS EB [developer guide](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-getting-started.html)
 
 
-# ETC 
+# ETC
 
-RDS loggin 
+RDS loggin
 "mysql -h ids-mturk.ctb0mvbckgia.ap-northeast-2.rds.amazonaws.com -P 3306 -u ael -p"
 
 

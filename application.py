@@ -3,7 +3,7 @@ from flask_cors import CORS
 import json, uuid, random
 import db
 # import db
-import datetime 
+import datetime
 
 
 # EB looks for an 'application' callable by default.
@@ -16,7 +16,7 @@ CORS(application)
 """
 def fetchTask():
     # Below is two possible tasks for a participant (will be replaced with pre-populated DB)
-    possibleTasks = [[100,101,110], [110,101,100]]  # 100:Static, 101:Animated, 110:Immersive
+    possibleTasks = [[100], [101], [110]]  # 100:Static_Non, 101:Animated_Non, 110:Immersive_Imm
     return random.sample(possibleTasks,1)[0]
 
 ################################################################
@@ -27,7 +27,7 @@ def Index():
     session["CompletionCode"] = str(uuid.uuid4())[:4]
     session["StoryID"] = 0
     session["Task"] = fetchTask()
-    return render_template("index.html") 
+    return render_template("index.html")
 
 @application.route("/story")
 def Story():
@@ -63,18 +63,18 @@ def AjaxGet():
         currentIDX = session["StoryID"]
         if currentIDX < len(session["Task"]):
             storyInfo = session["Task"][currentIDX]
-            session["StoryID"] = session["StoryID"] + 1 
+            session["StoryID"] = session["StoryID"] + 1
             PersonID = session['PersonID']
             db.add({
                 "PersonID":session["PersonID"],
                 "json": {
                     "event":"fetchStory",
-                    "storyIDS":currentIDX,     
+                    "storyIDS":currentIDX,
                     "storyInfo":storyInfo
                 }
             })
             return json.dumps({
-                "PersonID": PersonID, 
+                "PersonID": PersonID,
                 "task":session["Task"],
                 "nextStory":storyInfo,  # either 100,101,110 (type of the current story)
                 "StoryID":currentIDX
@@ -92,7 +92,7 @@ def AjaxGet():
             })
     else:
         return "?"
-    
+
 ################################################################
 ### DB testing endpoints
 @application.route('/add')
