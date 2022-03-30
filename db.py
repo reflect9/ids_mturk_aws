@@ -1,7 +1,7 @@
 from curses import meta
 from sqlalchemy import create_engine
 from sqlalchemy.schema import MetaData
-from sqlalchemy.sql import text 
+from sqlalchemy.sql import text
 import datetime, json
 
 engine = create_engine("mysql+pymysql://admin:admin12345@database-1.ctb0mvbckgia.ap-northeast-2.rds.amazonaws.com:3306/ids", echo=True, future=True)
@@ -10,9 +10,10 @@ def add(data):
     txt = '''Adding record'''
     with engine.connect() as conn:
         conn.execute(
-            text("INSERT INTO ids VALUE (:PersonID,:Timestamp,:JSON)"),
+            text("INSERT INTO ids VALUE (:PersonID, :CompletionCode, :Timestamp,:JSON)"),
             [{
                 "PersonID":data["PersonID"],
+                "CompletionCode":data["CompletionCode"],
                 "Timestamp":datetime.datetime.now(),
                 "JSON":json.dumps(data["json"])
             }]
@@ -38,5 +39,5 @@ def dropTable():
 
 def createTable():
     with engine.connect() as conn:
-        conn.execute(text("CREATE TABLE ids (PersonID varchar(255), Timestamp datetime, json JSON)"))
+        conn.execute(text("CREATE TABLE ids (PersonID varchar(255), CompletionCode varchar(255), Timestamp datetime, json JSON)"))
         conn.commit()
