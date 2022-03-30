@@ -33,6 +33,9 @@ def Index():
 def Story():
     return send_from_directory(application.static_folder,'index.html')
 
+@application.route("/completion")
+def Completion():
+    return render_template('completion.html')
 ################################################################
 ###  AJAX endpoints
 @application.route('/ajaxGet', methods=["GET"])
