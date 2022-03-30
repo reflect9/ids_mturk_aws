@@ -49,6 +49,7 @@ def AjaxGet():
         jsonData["event"] = "log"
         db.add({
             "PersonID":PersonID,
+            "CompletionCode":session["CompletionCode"],
             "json": jsonData
         })
 
@@ -74,6 +75,7 @@ def AjaxGet():
         if session["StoryID"] == -1:
             db.add({
                 "PersonID":session["PersonID"],
+                "CompletionCode":session["CompletionCode"],
                 "json": {
                     "event":"completed"
                 }
@@ -90,6 +92,7 @@ def AjaxGet():
             PersonID = session['PersonID']
             db.add({
                 "PersonID":session["PersonID"],
+                "CompletionCode":session["CompletionCode"],
                 "json": {
                     "event":"fetchStory",
                     "storyIDS":session["StoryID"],
@@ -127,7 +130,7 @@ def View():
     records = db.view()
     results = []
     for r in records:
-        results.append([r.PersonID, r.Timestamp, r.json])
+        results.append([r.PersonID, r.CompletionCode, r.Timestamp, r.json])
         print (r.json)
     return str(results)
 
