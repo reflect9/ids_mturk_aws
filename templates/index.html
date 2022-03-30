@@ -28,15 +28,17 @@
     <!-- INTRODUCTION PART : Shown first -->
     <div class="intro page">
         <h1> Testing User Experience of Reading Article on the Web </h1>
-        <p style="width: 600px; font-size: 12pt; line-height: 1.5">
-          In this survey, you will read an article and give
-          This study aims to collect your <b>subjective</b> responses to several questions after reading a snippet of web article. <br>
-          Before start reading and survey, <b>Please be prepared by following the tutorial below.</b><br>
-          While reading an article and having quiz session, <b>please don't try 'go to previous page'</b>. This survey will give you only one chance to read the article.<br>
-          Once you reach the quiz page, please fill out all qustionnaires without too long consideration and make sure you click the submit button.<br>
-          Thank you for your participation.
-          <br><br><br>
-          If you made all part of guideline visible, <br> please click the 'Start Task' button and start the session.
+        <p style="font-size: 21px; line-height: 1.8em;">
+          Thank you for your help. In this survey, you will read an article(s) and answer to the questionnaire. <br/>
+          Before start reading and survey, <b>Please resize your window or adjust zoom-level (ctrl + or -) until the rectangle below fits to your browser window.</b>
+        </p>
+        <h3>Note.</h3>
+        <ul style="font-size:21px; line-height:1.5em;">
+          <li>Do not skip or take a break while reading articles. (You may take a break answering to the questionnaire.)</li>
+          <li>Do not try to go back to the previous page (or refresh pages) at any point. </li>
+          <li>Copy the completion code at the end of the test. You will need to submit to the AMT page.</li>
+        </ul>
+
         </p>
         <script>
             function start() {
@@ -44,15 +46,16 @@
                 document.location.href = "../story";
             }
         </script>
-        <button onclick="start()">
-            Start Task
-        </button>
-        <hr/>
-        <div style="position: relative; height: 800px">
-          <div style="position: absolute; text-align: center; left: calc(450px - 685px); font-size: 16pt; width: 1370px; height: 700px; border: 1mm dashed rgba(211, 220, 50, 1.0); margin: 20px 0 50px 0;">
-            <br/> Please resize your browser or use zoom('ctrl' + '+ or -') to accomplish the instruction.
+        <div style="position: relative; height: 740px">
+          <div style="position: absolute; text-align: center; left: calc(450px - 685px); font-size: 16pt; width: 1370px; height: 700px; border: 1mm dashed rgba(211, 220, 50, 1.0); margin: 10px 0 10px 0;">
+            <br/> Make sure this rectangle fits to your browser window
           </div>
         </div>
+        <center>
+        <button onclick="start()" style="font-size:24px;">
+            Start Task
+        </button>
+      </center>
     </div>
 </body>
 

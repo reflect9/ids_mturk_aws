@@ -26,6 +26,7 @@ def Index():
     session["PersonID"] = str(uuid.uuid4())[:8]
     session["CompletionCode"] = str(uuid.uuid4())[:4]
     session["StoryID"] = 0
+    session["IsQuiz"] = 0
     session["Task"] = fetchTask()
     return render_template("index.html")
 
@@ -50,6 +51,13 @@ def AjaxGet():
             "PersonID":PersonID,
             "json": jsonData
         })
+
+        if session["StoryID"] < len(session["Task"]) - 1:
+            session["StoryID"] = session["StoryID"] + 1
+        else:
+            session["StoryID"] = -1
+        session["IsQuiz"] = 0;
+        print("StoryID:", session["StoryID"])
         return "done"
     elif action == "getSessionVar": # Getting the current session's variable
         response = { }
@@ -63,26 +71,7 @@ def AjaxGet():
                 response[k] = "There is no session variable for " + k
         return json.dumps(response)
     elif action == "fetchNextStory": # ReactJS is getting information of the next story
-        currentIDX = session["StoryID"]
-        if currentIDX < len(session["Task"]):
-            storyInfo = session["Task"][currentIDX]
-            session["StoryID"] = session["StoryID"] + 1
-            PersonID = session['PersonID']
-            db.add({
-                "PersonID":session["PersonID"],
-                "json": {
-                    "event":"fetchStory",
-                    "storyIDS":currentIDX,
-                    "storyInfo":storyInfo
-                }
-            })
-            return json.dumps({
-                "PersonID": PersonID,
-                "task":session["Task"],
-                "nextStory":storyInfo,  # either 100,101,110 (type of the current story)
-                "StoryID":currentIDX
-            })
-        else:
+        if session["StoryID"] == -1:
             db.add({
                 "PersonID":session["PersonID"],
                 "json": {
@@ -90,9 +79,39 @@ def AjaxGet():
                 }
             })
             return json.dumps({
-                "CompletionCode": session["CompletionCode"],
-                "nextStory":0
+                "PersonID":session["PersonID"],
+                "CompletionCode":session["CompletionCode"],
+                "nextStory":-1,
+                "isQuiz":session["IsQuiz"]
             })
+        else:
+            storyInfo = session["Task"][session["StoryID"]]
+            # session["StoryID"] = session["StoryID"] + 1
+            PersonID = session['PersonID']
+            db.add({
+                "PersonID":session["PersonID"],
+                "json": {
+                    "event":"fetchStory",
+                    "storyIDS":session["StoryID"],
+                    "storyInfo":storyInfo
+                }
+            })
+            return json.dumps({
+                "PersonID": PersonID,
+                "task":session["Task"],
+                "nextStory":storyInfo,  # either 100,101,110 (type of the current story)
+                "StoryID":session["StoryID"],
+                "isQuiz":session["IsQuiz"]
+            })
+    elif action == "setQuiz":
+        session["IsQuiz"] = 1;
+        return json.dumps({
+            "PersonID": session['PersonID'],
+            "task":session["Task"],
+            "nextStory": session["Task"][session["StoryID"]],  # either 100,101,110 (type of the current story)
+            "StoryID":session["StoryID"],
+            "isQuiz":session["IsQuiz"]
+        })
     else:
         return "?"
 
