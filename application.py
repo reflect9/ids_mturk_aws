@@ -16,7 +16,8 @@ CORS(application)
 """
 def fetchTask():
     # Below is two possible tasks for a participant (will be replaced with pre-populated DB)
-    possibleTasks = [[100], [101], [110]]  # 100:Static_Non, 101:Animated_Non, 110:Immersive_Imm
+    possibleTasks = [[1000], [1001], [1010], [1011], [1100], [1101], [1110]]
+    # 1000:Static_Non1, 1001:Animated_Non, 1010:Immersive_Non, 1011:Static_Non2, 1100: Static_Imm, 1101: Animated_Imm, 1110: Immersive_Imm
     return random.sample(possibleTasks,1)[0]
 
 ################################################################
