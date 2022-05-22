@@ -17,7 +17,7 @@ CORS(application)
 def fetchTask():
     # Below is two possible tasks for a participant (will be replaced with pre-populated DB)
     # possibleTasks = [[1000], [1001], [1010], [1011], [1100], [1101], [1110]]
-    possibleTasks = [[1000], [1001], [1110]]
+    possibleTasks = [[1000, 1110], [1110, 1000]]
     # 1000:Static_Non1, 1001:Animated_Non, 1010:Immersive_Non, 1011:Static_Non2, 1100: Static_Imm, 1101: Animated_Imm, 1110: Immersive_Imm
     return random.sample(possibleTasks,1)[0]
 
@@ -26,8 +26,8 @@ def fetchTask():
 @application.route("/")
 def Index():
     session["PersonID"] = str(uuid.uuid4())[:8]
-    # session["CompletionCode"] = str(uuid.uuid4())[:4]
-    session["CompletionCode"] = '8C63855D' # given code from Prolific
+    session["CompletionCode"] = str(uuid.uuid4())[:4]
+    # session["CompletionCode"] = '8C63855D' # given code from Prolific
     session["StoryID"] = 0
     session["IsQuiz"] = 0
     session["Task"] = fetchTask()
@@ -110,7 +110,7 @@ def AjaxGet():
                 "isQuiz":session["IsQuiz"]
             })
     elif action == "setQuiz":
-        session["IsQuiz"] = 1;
+        session["IsQuiz"] = session["StoryID"] + 1;
         return json.dumps({
             "PersonID": session['PersonID'],
             "task":session["Task"],
