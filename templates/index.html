@@ -35,6 +35,9 @@
           2) read another article with same contents but different style and answer to the questionnaire. <br/><br/>
           Before start reading and survey, <b>Please resize your window or adjust zoom-level (ctrl + or -) until the rectangle below is fully visible in your browser window.</b>
         </p>
+        <label for="name"> Please Your Participant <b>Prolific ID</b>:</label>
+        <input type="text" id="pID" name="pID" required size="20">
+
         <h3>Note.</h3>
         <ul style="font-size:21px; line-height:1.5em;">
           <li>Do not skip or take a break while reading articles. (You may take a break answering to the questionnaire.)</li>
@@ -125,11 +128,12 @@
         if (e == "start") {
             // Pressing Start button
             let jsonString = JSON.stringify({
-                "event": "Start Button"
+                "event": "Start Button",
+                "ProlificID": document.getElementById("pID").value
             });
             ajaxGet({
-                "action": "log",
-                "JSON": jsonString
+                "action": "start",
+                "json": jsonString
             }, (data) => {
                 console.log(data);
             });

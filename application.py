@@ -26,8 +26,8 @@ def fetchTask():
 @application.route("/")
 def Index():
     session["PersonID"] = str(uuid.uuid4())[:8]
-    session["CompletionCode"] = str(uuid.uuid4())[:4]
-    # session["CompletionCode"] = '8C63855D' # given code from Prolific
+    # session["CompletionCode"] = str(uuid.uuid4())[:4]
+    session["CompletionCode"] = '4F618013' # given code from Prolific
     session["StoryID"] = 0
     session["IsQuiz"] = 0
     session["Task"] = fetchTask()
@@ -46,10 +46,10 @@ def Completion():
 def AjaxGet():
     action = request.args.get('action')
     if action == "log": # Adding a new record
-        PersonID = session['PersonID']
         print (request.args.get('json'))
         jsonData = json.loads(request.args.get('json'))
         jsonData["event"] = "log"
+        PersonID = session['PersonID']
         db.add({
             "PersonID":PersonID,
             "CompletionCode":session["CompletionCode"],
@@ -118,6 +118,9 @@ def AjaxGet():
             "StoryID":session["StoryID"],
             "isQuiz":session["IsQuiz"]
         })
+    elif action == "start":
+        print (request.args.get('json'))
+        session['PersonID'] = json.loads(request.args.get('json'))["ProlificID"]
     else:
         return "?"
 
