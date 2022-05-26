@@ -41,3 +41,8 @@ def createTable():
     with engine.connect() as conn:
         conn.execute(text("CREATE TABLE ids (PersonID varchar(255), CompletionCode varchar(255), Timestamp datetime, json JSON)"))
         conn.commit()
+
+def myOperation():
+    with engine.connect() as conn:
+        conn.execute(text(""))
+        conn.commit()

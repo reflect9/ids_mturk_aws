@@ -116,7 +116,7 @@ def AjaxGet():
             "task":session["Task"],
             "nextStory": session["Task"][session["StoryID"]],  # either 100,101,110 (type of the current story)
             "StoryID":session["StoryID"],
-            "isQuiz":session["IsQuiz"]
+            "isQuiz":session["IsQuiz"],
         })
     elif action == "start":
         print (request.args.get('json'))
@@ -154,6 +154,15 @@ def Drop():
 def Create():
     db.createTable()
     return "DB Table Created"
+
+@application.route('/board')
+def Board():
+    records = db.myOperation()
+    results = []
+    for r in records:
+        results.append([r.PersonID, r.CompletionCode, r.Timestamp, r.json])
+        print (r.json)
+    return str(results)
 
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
