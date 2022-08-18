@@ -44,5 +44,8 @@ def createTable():
 
 def myOperation():
     with engine.connect() as conn:
-        conn.execute(text(""))
-        conn.commit()
+        return conn.execute(text("SELECT * FROM ids"))
+
+def assign():
+    with engine.connect() as conn:
+        return conn.execute(text("SELECT COUNT(DISTINCT PersonID) FROM ids"))
