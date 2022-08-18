@@ -29,9 +29,16 @@
     <div class="intro page">
         <h1> Testing User Experience of Reading Article on the Web </h1>
         <p style="font-size: 21px; line-height: 1.8em;">
-          Thank you for your help. In this survey, you will read an article(s) and answer to the questionnaire. <br/>
-          Before start reading and survey, <b>Please resize your window or adjust zoom-level (ctrl + or -) until the rectangle below fits to your browser window.</b>
+          Thank you for your help.<br/>
+          In this survey, you will<br/>
+          1) read an article and answer to a couple questions<br/>
+          2) read another article of the same contents but in a different style<br/>
+          3) compare the two articles<br/>
+          Before start reading and survey, <b>Please resize your window or adjust zoom-level (ctrl + or -) until the rectangle below is fully visible in your browser window.</b>
         </p>
+        <label for="name"> Please Your Participant <b>Prolific ID</b>:</label>
+        <input type="text" id="pID" name="pID" required size="20">
+
         <h3>Note.</h3>
         <ul style="font-size:21px; line-height:1.5em;">
           <li>Do not skip or take a break while reading articles. (You may take a break answering to the questionnaire.)</li>
@@ -46,8 +53,8 @@
                 document.location.href = "../story";
             }
         </script>
-        <div style="position: relative; height: 740px">
-          <div style="position: absolute; text-align: center; left: calc(450px - 685px); font-size: 16pt; width: 1370px; height: 700px; border: 1mm dashed rgba(211, 220, 50, 1.0); margin: 10px 0 10px 0;">
+        <div style="position: relative; height: 890px">
+          <div style="position: absolute; text-align: center; left: calc(450px - 735px); font-size: 16pt; width: 1470px; height: 850px; border: 1mm dashed rgba(211, 220, 50, 1.0); margin: 10px 0 10px 0;">
             <br/> Make sure this rectangle fits to your browser window
           </div>
         </div>
@@ -122,11 +129,12 @@
         if (e == "start") {
             // Pressing Start button
             let jsonString = JSON.stringify({
-                "event": "Start Button"
+                "event": "Start Button",
+                "ProlificID": document.getElementById("pID").value
             });
             ajaxGet({
-                "action": "log",
-                "JSON": jsonString
+                "action": "start",
+                "json": jsonString
             }, (data) => {
                 console.log(data);
             });

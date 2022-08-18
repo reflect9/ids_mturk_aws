@@ -41,3 +41,11 @@ def createTable():
     with engine.connect() as conn:
         conn.execute(text("CREATE TABLE ids (PersonID varchar(255), CompletionCode varchar(255), Timestamp datetime, json JSON)"))
         conn.commit()
+
+def myOperation():
+    with engine.connect() as conn:
+        return conn.execute(text("SELECT * FROM ids"))
+
+def assign():
+    with engine.connect() as conn:
+        return conn.execute(text("SELECT COUNT(DISTINCT PersonID) FROM ids"))
