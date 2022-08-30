@@ -127,6 +127,17 @@ def AjaxGet():
             })
     elif action == "setQuiz":
         session["IsQuiz"] = session["StoryID"] + 1;
+        db.add({
+            "PersonID":session["PersonID"],
+            "Tasks":session["Task"],
+            "DS":session["DS"],
+            "CompletionCode":session["CompletionCode"],
+            "json": {
+                "event":"setQuiz",
+                "storyIDS":session["StoryID"],
+                "isQuiz":session["IsQuiz"],
+            }
+        })
         return json.dumps({
             "PersonID": session['PersonID'],
             "task":session["Task"],
@@ -171,7 +182,7 @@ def Assign():
         results.append(r.PersonID)
 
     index = len(set(results)) % 12
-    return str(index);
+    return str(set(results));
 
 @application.route('/reset')
 def Reset():
