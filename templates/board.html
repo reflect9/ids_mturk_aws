@@ -33,6 +33,7 @@
           <h1> Testing User Experience of Reading Article on the Web </h1>
           <label for="name"> Participant <b>Prolific ID</b>:</label>
           <input type="text" id="pID" name="pID" required size="20">
+          <button onclick="downloadBlob()"> Export as CSV </button>
           <br><br><br>
           <label for="ds">Choose DS:</label>
           <select name="ds" id="ds" onchange="onChange1()">
@@ -126,15 +127,6 @@
         </center>
 
         <script>
-          // Plotly.newPlot(document.getElementById('plot_M1'), {{graph_M1 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M2'), {{graph_M2 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M3'), {{graph_M3 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M111'), {{graph_M111 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M112'), {{graph_M112 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M121'), {{graph_M121 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M122'), {{graph_M122 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M131'), {{graph_M131 | safe}}, {}, {});
-          // Plotly.newPlot(document.getElementById('plot_M132'), {{graph_M132 | safe}}, {}, {});
           const hist_int = document.getElementById('plot_int');
           const hist_eas = document.getElementById('plot_eas');
           const hist_per = document.getElementById('plot_per');
@@ -307,8 +299,10 @@
           const layout = {
             barmode:"overlay",
             xaxis: { fixedrange: true, range: [-3.5, 3.5], showticklabels: true },
-            yaxis: { fixedrange: true, range: [0, 10] }
+            yaxis: { fixedrange: true, range: [0, 20] }
           };
+
+          console.log({{ data3 | tojson }});
 
           function drawPlots(){
             data_ds = ds==0?ds0.int:ds1.int;
@@ -491,6 +485,248 @@
           // baseline chart = ds0_Stt_Anm
           drawPlots()
           changeLists();
+
+          function dataToArray(){
+            const demos = {{ data3 | tojson }};
+            let result = [["ID", "AGE", "English Reading Proficiency", "Number of Articles Reading on Web", "Gender", "Highest Educational Level", "DS##", "Cond_1", "CondCode_1", "Cond_2", "CondCode_2", "FirstSeen", "Score", "Factor", "Comment"]];
+            for(let i=0; i<ucs_int.length; i++){
+              let temp = [];
+              // ID
+              temp.push(ucs_int[i].ID);
+              // Demo
+              let demo = demos.find(ele => ele.ID == ucs_int[i].ID);
+              temp.push(demo!=undefined?demo.Json.AGE:"not found");
+              temp.push(demo!=undefined?demo.Json.ERP:"not found");
+              temp.push(demo!=undefined?demo.Json.FOW:"not found");
+              temp.push(demo!=undefined?demo.Json.GEN:"not found");
+              temp.push(demo!=undefined?demo.Json.HEL:"not found");
+              // DS##
+              temp.push(ucs_int[i].DS);
+              // Conds, Score
+              if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('101')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Animated");
+                temp.push(101);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
+              }else if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('110')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
+              }else if(ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
+                temp.push("Animated");
+                temp.push(101);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucs_int[i].DS_Task.includes('101/')?ucs_int[i].score:-ucs_int[i].score);
+              }
+              // Factor
+              temp.push("INT");
+              // Comment
+              temp.push(ucs_int[i].comment);
+              result.push(temp);
+            }
+            for(let i=0; i<ucs_eas.length; i++){
+              let temp = [];
+              // ID
+              temp.push(ucs_eas[i].ID);
+              // Demo
+              let demo = demos.find(ele => ele.ID == ucs_eas[i].ID);
+              temp.push(demo!=undefined?demo.Json.AGE:"not found");
+              temp.push(demo!=undefined?demo.Json.ERP:"not found");
+              temp.push(demo!=undefined?demo.Json.FOW:"not found");
+              temp.push(demo!=undefined?demo.Json.GEN:"not found");
+              temp.push(demo!=undefined?demo.Json.HEL:"not found");
+              // DS##
+              temp.push(ucs_eas[i].DS);
+              // Conds, Score
+              if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('101')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Animated");
+                temp.push(101);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
+              }else if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('110')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
+              }else if(ucs_eas[i].DS_Task.includes('101') && ucs_eas[i].DS_Task.includes('110')){
+                temp.push("Animated");
+                temp.push(101);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucs_eas[i].DS_Task.includes('101/')?ucs_eas[i].score:-ucs_eas[i].score);
+              }
+              // Factor
+              temp.push("EAS");
+              // Comment
+              temp.push(ucs_eas[i].comment);
+              result.push(temp);
+            }
+            for(let i=0; i<ucs_per.length; i++){
+              let temp = [];
+              // ID
+              temp.push(ucs_per[i].ID);
+              // Demo
+              let demo = demos.find(ele => ele.ID == ucs_per[i].ID);
+              temp.push(demo!=undefined?demo.Json.AGE:"not found");
+              temp.push(demo!=undefined?demo.Json.ERP:"not found");
+              temp.push(demo!=undefined?demo.Json.FOW:"not found");
+              temp.push(demo!=undefined?demo.Json.GEN:"not found");
+              temp.push(demo!=undefined?demo.Json.HEL:"not found");
+              // DS##
+              temp.push(ucs_per[i].DS);
+              // Conds, Score
+              if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('101')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Animated");
+                temp.push(101);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
+              }else if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('110')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
+              }else if(ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
+                temp.push("Animated");
+                temp.push(101);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucs_per[i].DS_Task.includes('101/')?ucs_per[i].score:-ucs_per[i].score);
+              }
+              // Factor
+              temp.push("PER");
+              // Comment
+              temp.push(ucs_per[i].comment);
+              result.push(temp);
+            }
+            for(let i=0; i<ucs_tru.length; i++){
+              let temp = [];
+              // ID
+              temp.push(ucs_tru[i].ID);
+              // Demo
+              let demo = demos.find(ele => ele.ID == ucs_tru[i].ID);
+              temp.push(demo!=undefined?demo.Json.AGE:"not found");
+              temp.push(demo!=undefined?demo.Json.ERP:"not found");
+              temp.push(demo!=undefined?demo.Json.FOW:"not found");
+              temp.push(demo!=undefined?demo.Json.GEN:"not found");
+              temp.push(demo!=undefined?demo.Json.HEL:"not found");
+              // DS##
+              temp.push(ucs_tru[i].DS);
+              // Conds, Score
+              if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('101')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Animated");
+                temp.push(101);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
+              }else if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('110')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
+              }else if(ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
+                temp.push("Animated");
+                temp.push(101);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucs_tru[i].DS_Task.includes('101/')?ucs_tru[i].score:-ucs_tru[i].score);
+              }
+              // Factor
+              temp.push("TRU");
+              // Comment
+              temp.push(ucs_tru[i].comment);
+              result.push(temp);
+            }
+            for(let i=0; i<ucs_cur.length; i++){
+              let temp = [];
+              // ID
+              temp.push(ucs_cur[i].ID);
+              // Demo
+              let demo = demos.find(ele => ele.ID == ucs_cur[i].ID);
+              temp.push(demo!=undefined?demo.Json.AGE:"not found");
+              temp.push(demo!=undefined?demo.Json.ERP:"not found");
+              temp.push(demo!=undefined?demo.Json.FOW:"not found");
+              temp.push(demo!=undefined?demo.Json.GEN:"not found");
+              temp.push(demo!=undefined?demo.Json.HEL:"not found");
+              // DS##
+              temp.push(ucs_cur[i].DS);
+              // Conds, Score
+              if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Animated");
+                temp.push(101);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
+              }else if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
+                temp.push("Static");
+                temp.push(100);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
+              }else if(ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
+                temp.push("Animated");
+                temp.push(101);
+                temp.push("Immersive");
+                temp.push(110);
+                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
+              }
+              // Factor
+              temp.push("CUR");
+              // Comment
+              temp.push(ucs_cur[i].comment);
+              result.push(temp);
+            }
+
+            return result;
+          }
+
+          function arrayToCsv(data){
+            return data.map(row =>
+              row
+              .map(String)  // convert every value to String
+              .map(v => v.replaceAll('"', '""'))  // escape double colons
+              .map(v => `"${v}"`)  // quote it
+              .join(',')  // comma-separated
+            ).join('\r\n');  // rows starting on new lines
+          }
+
+          function downloadBlob() {
+            const content = arrayToCsv(dataToArray());
+            const filename = 'export.csv';
+            const contentType = 'text/csv;charset=utf-8;'
+            // Create a blob
+            let blob = new Blob([content], { type: contentType });
+            let url = URL.createObjectURL(blob);
+
+            // Create a link to download it
+            let pom = document.createElement('a');
+            pom.href = url;
+            pom.setAttribute('download', filename);
+            pom.click();
+          }
 
           function start() {
             log('start');

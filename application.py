@@ -219,7 +219,7 @@ def Board():
 
     for r in records:
         loadedJson = json.loads(r.json)
-        if r.Timestamp.month == 8 and r.Timestamp.day > 20 and len(r.PersonID) == 24 and loadedJson['event'] == 'log':
+        if r.Timestamp.month >= 8 and r.Timestamp.day > 20 and len(r.PersonID) == 24 and loadedJson['event'] == 'log':
             if 'scroll' in loadedJson:
                 loadedJson["scroll"] = []
             if 'M2' in loadedJson:
@@ -249,7 +249,8 @@ def Board():
                             "FirstTask":loadedJson["Task"][0],
                             "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
                             "score": v["col1"],
-                            "comment": v[""]
+                            "comment": v[""],
+                            "ID": r.PersonID,
                         })
                     elif 'easier' in k or 'easy' in k:
                         UCS_eas.append({
@@ -257,7 +258,8 @@ def Board():
                             "FirstTask":loadedJson["Task"][0],
                             "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
                             "score": v["col1"],
-                            "comment": v[""]
+                            "comment": v[""],
+                            "ID": r.PersonID,
                         })
                     elif 'persuasive' in k:
                         UCS_per.append({
@@ -265,7 +267,8 @@ def Board():
                             "FirstTask":loadedJson["Task"][0],
                             "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
                             "score": v["col1"],
-                            "comment": v[""]
+                            "comment": v[""],
+                            "ID": r.PersonID,
                         })
                     elif 'trustworthy' in k:
                         UCS_tru.append({
@@ -273,7 +276,8 @@ def Board():
                             "FirstTask":loadedJson["Task"][0],
                             "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
                             "score": v["col1"],
-                            "comment": v[""]
+                            "comment": v[""],
+                            "ID": r.PersonID,
                         })
                     elif 'curious' in k:
                         UCS_cur.append({
@@ -281,7 +285,8 @@ def Board():
                             "FirstTask":loadedJson["Task"][0],
                             "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
                             "score": v["col1"],
-                            "comment": v[""]
+                            "comment": v[""],
+                            "ID": r.PersonID,
                         })
             else:
                 results3.append({
@@ -296,7 +301,7 @@ def Board():
     UCS_per.sort(key=lambda x: (int(x["FirstTask"]), int(x["score"]), int(x["DS"])))
     UCS_tru.sort(key=lambda x: (int(x["FirstTask"]), int(x["score"]), int(x["DS"])))
     UCS_cur.sort(key=lambda x: (int(x["FirstTask"]), int(x["score"]), int(x["DS"])))
-    print(UCS_tru)
+    print(len(UCS_tru))
 
 
     graph_layout = {}
