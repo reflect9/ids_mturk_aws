@@ -2,10 +2,7 @@ from flask import Flask, render_template, request, session, send_from_directory
 from flask_cors import CORS
 import json, uuid, random
 import db
-# import db
 import datetime
-# import plotly, plotly.graph_objs as go
-
 
 # EB looks for an 'application' callable by default.
 application = Flask(__name__, static_url_path='', static_folder='2022DS_build')
@@ -16,7 +13,6 @@ CORS(application)
     Later we will populat task lists in DB
 """
 def fetchTask():
-    # Below is two possible tasks for a participant (will be replaced with pre-populated DB)
     records = db.myOperation()
     results = []
     for r in records:
@@ -32,6 +28,7 @@ def fetchTask():
 ###  Web Page endpoints
 @application.route("/")
 def Index():
+    session["IsArchive"] = False
     session["PersonID"] = str(uuid.uuid4())[:8]
     # session["CompletionCode"] = str(uuid.uuid4())[:4]
     session["CompletionCode"] = '4F618013' # given code from Prolific
@@ -49,6 +46,17 @@ def Story():
 @application.route("/completion")
 def Completion():
     return render_template('completion.html')
+
+@application.route("/archive")
+def Archive():
+    session["IsArchive"] = True
+    session["PersonID"] = str(uuid.uuid4())[:8]
+    session["CompletionCode"] = '4F618013' # given code from Prolific
+    session["StoryID"] = 0
+    session["IsQuiz"] = 0
+    session["DS"] = 0
+    session["Task"] = [100, 101]
+    return render_template("archive.html")
 ################################################################
 ###  AJAX endpoints
 @application.route('/ajaxGet', methods=["GET"])
@@ -61,11 +69,12 @@ def AjaxGet():
         jsonData["DS"] = session["DS"]
         jsonData["Task"] = session["Task"]
         PersonID = session['PersonID']
-        db.add({
-            "PersonID":PersonID,
-            "CompletionCode":session["CompletionCode"],
-            "json": jsonData
-        })
+        if session["IsArchive"] == False:
+            db.add({
+                "PersonID":PersonID,
+                "CompletionCode":session["CompletionCode"],
+                "json": jsonData
+            })
 
         if session["StoryID"] < len(session["Task"]) - 1:
             session["StoryID"] = session["StoryID"] + 1
@@ -88,13 +97,14 @@ def AjaxGet():
     elif action == "fetchNextStory": # ReactJS is getting information of the next story
         # print(db);
         if session["StoryID"] == -1:
-            db.add({
-                "PersonID":session["PersonID"],
-                "CompletionCode":session["CompletionCode"],
-                "json": {
-                    "event":"completed"
-                }
-            })
+            if session["IsArchive"] == False:
+                db.add({
+                    "PersonID":session["PersonID"],
+                    "CompletionCode":session["CompletionCode"],
+                    "json": {
+                        "event":"completed"
+                    }
+                })
             return json.dumps({
                 "PersonID":session["PersonID"],
                 "CompletionCode":session["CompletionCode"],
@@ -106,55 +116,71 @@ def AjaxGet():
             storyInfo = session["Task"][session["StoryID"]]
             # session["StoryID"] = session["StoryID"] + 1
             PersonID = session['PersonID']
+            if session["IsArchive"] == False:
+                db.add({
+                    "PersonID":session["PersonID"],
+                    "Tasks":session["Task"],
+                    "DS":session["DS"],
+                    "CompletionCode":session["CompletionCode"],
+                    "json": {
+                        "event":"fetchStory",
+                        "storyIDS":session["StoryID"],
+                        "storyInfo":storyInfo
+                    }
+                })
+            return json.dumps({
+                "PersonID": PersonID,
+                "task":session["Task"],
+                "DS":session["DS"],
+                "nextStory":storyInfo,
+                "StoryID":session["StoryID"],
+                "isQuiz":session["IsQuiz"]
+            })
+    elif action == "setQuiz":
+        session["IsQuiz"] = session["StoryID"] + 1;
+        if session["IsArchive"] == False:
             db.add({
                 "PersonID":session["PersonID"],
                 "Tasks":session["Task"],
                 "DS":session["DS"],
                 "CompletionCode":session["CompletionCode"],
                 "json": {
-                    "event":"fetchStory",
+                    "event":"setQuiz",
                     "storyIDS":session["StoryID"],
-                    "storyInfo":storyInfo
+                    "isQuiz":session["IsQuiz"],
                 }
             })
-            return json.dumps({
-                "PersonID": PersonID,
-                "task":session["Task"],
-                "DS":session["DS"],
-                "nextStory":storyInfo,  # either 100,101,110 (type of the current story)
-                "StoryID":session["StoryID"],
-                "isQuiz":session["IsQuiz"]
-            })
-    elif action == "setQuiz":
-        session["IsQuiz"] = session["StoryID"] + 1;
-        db.add({
-            "PersonID":session["PersonID"],
-            "Tasks":session["Task"],
-            "DS":session["DS"],
-            "CompletionCode":session["CompletionCode"],
-            "json": {
-                "event":"setQuiz",
-                "storyIDS":session["StoryID"],
-                "isQuiz":session["IsQuiz"],
-            }
-        })
         return json.dumps({
             "PersonID": session['PersonID'],
             "task":session["Task"],
             "DS":session["DS"],
-            "nextStory": session["Task"][session["StoryID"]],  # either 100,101,110 (type of the current story)
+            "nextStory": session["Task"][session["StoryID"]],
             "StoryID":session["StoryID"],
             "isQuiz":session["IsQuiz"],
         })
+
     elif action == "start":
-        print (request.args.get('json'))
-        session['PersonID'] = json.loads(request.args.get('json'))["ProlificID"]
+        if session["IsArchive"] == False:
+            print (request.args.get('json'))
+            session['PersonID'] = json.loads(request.args.get('json'))["ProlificID"]
+
     elif action == "setMain":
-        return json.dumps({
-            "PersonID": session['PersonID'],
-            "DS":session["DS"],
-            "task":session["Task"],
-        })
+        if session["IsArchive"] == False:
+            return json.dumps({
+                "PersonID": session['PersonID'],
+                "DS":session["DS"],
+                "task":session["Task"],
+                "Archive":session["IsArchive"]
+            })
+        else:
+            session["DS"] = request.args.get('ds');
+            session["Task"] = [request.args.get('condition'), request.args.get('condition')];
+            return json.dumps({
+                "PersonID": session['PersonID'],
+                "DS":session["DS"],
+                "task":session["Task"],
+                "Archive":session["IsArchive"]
+            })
     else:
         return "?"
 

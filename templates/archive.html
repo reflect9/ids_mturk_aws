@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IDS Archive</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        html,
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .page {
+            margin: 40px auto;
+            width: 900px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- INTRODUCTION PART : Shown first -->
+
+    <div class="intro page">
+      <div style="position: relative; height: 890px">
+        <div style="position: absolute; text-align: center; left: calc(450px - 735px); font-size: 16pt; width: 1470px; height: 850px; border: 1mm dashed rgba(211, 220, 50, 1.0); margin: 10px 0 10px 0;">
+          <br/> Make sure this rectangle fits to your browser window
+        </div>
+      </div>
+    </div>
+    <center>
+      <button onclick="start()" style="font-size:24px;">
+          Start Task
+      </button>
+    </center>
+</body>
+
+
+<script>
+    let stories; // This will contain three(?) stories for the current participant.
+    let storyIdx = 0; // Index number of the current story
+
+    $.ready(() => {
+        $(".page").addClass("hidden");
+        $(".intro").removeClass("hidden");
+    });
+
+    function ajaxGet(reqJson, callback) {
+        /* Example usage.
+          ajaxGet({"action":"add", "JSON":JSON.stringify({'a':1234,'b':234})})
+        */
+        $.getJSON('ajaxGet', reqJson, callback);
+    }
+
+    function start() {
+      document.location.href = "../story";
+    }
+
+    function fetchStories() {
+        // This method will be called once, when a new participant begins
+        ajaxGet({
+            "action": "fetchStories"
+        }, (data) => {
+            stories = data.stories;
+        });
+    }
+
+</script>
+
+</html>
