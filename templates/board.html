@@ -195,6 +195,33 @@
               cond_101_110: [],
             },
           };
+          let ds2 = {
+            int:{
+              cond_100_101: [],
+              cond_100_110: [],
+              cond_101_110: [],
+            },
+            eas:{
+              cond_100_101: [],
+              cond_100_110: [],
+              cond_101_110: [],
+            },
+            per:{
+              cond_100_101: [],
+              cond_100_110: [],
+              cond_101_110: [],
+            },
+            tru:{
+              cond_100_101: [],
+              cond_100_110: [],
+              cond_101_110: [],
+            },
+            cur:{
+              cond_100_101: [],
+              cond_100_110: [],
+              cond_101_110: [],
+            },
+          };
 
           const ucs_int = {{ UCS_int | tojson }};
           for(let i=0; i<ucs_int.length; i++){
@@ -213,6 +240,14 @@
                 ds1.int.cond_100_110.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
               }else if(ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
                 ds1.int.cond_101_110.push(ucs_int[i].DS_Task.includes('101/')?ucs_int[i].score:-ucs_int[i].score);
+              }
+            }else if(ucs_int[i].DS == 2){
+              if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('101')){
+                ds2.int.cond_100_101.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
+              }else if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('110')){
+                ds2.int.cond_100_110.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
+              }else if(ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
+                ds2.int.cond_101_110.push(ucs_int[i].DS_Task.includes('101/')?ucs_int[i].score:-ucs_int[i].score);
               }
             }
           }
@@ -235,6 +270,15 @@
                 ds1.eas.cond_101_110.push(ucs_eas[i].DS_Task.includes('101/')?ucs_eas[i].score:-ucs_eas[i].score);
               }
             }
+            else if(ucs_eas[i].DS == 2){
+              if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('101')){
+                ds2.eas.cond_100_101.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
+              }else if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('110')){
+                ds2.eas.cond_100_110.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
+              }else if(ucs_eas[i].DS_Task.includes('101') && ucs_eas[i].DS_Task.includes('110')){
+                ds2.eas.cond_101_110.push(ucs_eas[i].DS_Task.includes('101/')?ucs_eas[i].score:-ucs_eas[i].score);
+              }
+            }
           }
           const ucs_per = {{ UCS_per | tojson }};
           for(let i=0; i<ucs_per.length; i++){
@@ -253,6 +297,14 @@
                 ds1.per.cond_100_110.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
               }else if(ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
                 ds1.per.cond_101_110.push(ucs_per[i].DS_Task.includes('101/')?ucs_per[i].score:-ucs_per[i].score);
+              }
+            }else if(ucs_per[i].DS == 2){
+              if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('101')){
+                ds2.per.cond_100_101.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
+              }else if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('110')){
+                ds2.per.cond_100_110.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
+              }else if(ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
+                ds2.per.cond_101_110.push(ucs_per[i].DS_Task.includes('101/')?ucs_per[i].score:-ucs_per[i].score);
               }
             }
           }
@@ -274,6 +326,14 @@
               }else if(ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
                 ds1.tru.cond_101_110.push(ucs_tru[i].DS_Task.includes('101/')?ucs_tru[i].score:-ucs_tru[i].score);
               }
+            }else if(ucs_tru[i].DS == 2){
+              if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('101')){
+                ds2.tru.cond_100_101.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
+              }else if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('110')){
+                ds2.tru.cond_100_110.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
+              }else if(ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
+                ds2.tru.cond_101_110.push(ucs_tru[i].DS_Task.includes('101/')?ucs_tru[i].score:-ucs_tru[i].score);
+              }
             }
           }
           const ucs_cur = {{ UCS_cur | tojson }};
@@ -294,6 +354,14 @@
               }else if(ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
                 ds1.cur.cond_101_110.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
               }
+            }else if(ucs_cur[i].DS == 2){
+              if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
+                ds2.cur.cond_100_101.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
+              }else if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
+                ds2.cur.cond_100_110.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
+              }else if(ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
+                ds2.cur.cond_101_110.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
+              }
             }
           }
           const layout = {
@@ -302,34 +370,35 @@
             yaxis: { fixedrange: true, range: [0, 20] }
           };
 
+          console.log(ds2);
           console.log({{ data3 | tojson }});
 
           function drawPlots(){
-            data_ds = ds==0?ds0.int:ds1.int;
+            data_ds = ds==0?ds0.int:ds==1?ds1.int:ds2.int;
             data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
             Plotly.newPlot(hist_int, [{
               x: data_condition,
               type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
             }], layout);
-            data_ds = ds==0?ds0.eas:ds1.eas;
+            data_ds = ds==0?ds0.eas:ds==1?ds1.eas:ds2.eas;
             data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
             Plotly.newPlot(hist_eas, [{
               x: data_condition,
               type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
             }], layout);
-            data_ds = ds==0?ds0.per:ds1.per;
+            data_ds = ds==0?ds0.per:ds==1?ds1.per:ds2.per;
             data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
             Plotly.newPlot(hist_per, [{
               x: data_condition,
               type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
             }], layout);
-            data_ds = ds==0?ds0.tru:ds1.tru;
+            data_ds = ds==0?ds0.tru:ds==1?ds1.tru:ds2.tru;
             data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
             Plotly.newPlot(hist_tru, [{
               x: data_condition,
               type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
             }], layout);
-            data_ds = ds==0?ds0.cur:ds1.cur;
+            data_ds = ds==0?ds0.cur:ds==1?ds1.cur:ds2.cur;
             data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
             Plotly.newPlot(hist_cur, [{
               x: data_condition,

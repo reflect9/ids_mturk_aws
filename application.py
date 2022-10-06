@@ -245,7 +245,7 @@ def Board():
 
     for r in records:
         loadedJson = json.loads(r.json)
-        if r.Timestamp.month >= 8 and r.Timestamp.day > 20 and len(r.PersonID) == 24 and loadedJson['event'] == 'log':
+        if ((r.Timestamp.month >= 8 and r.Timestamp.day > 20) or (r.Timestamp.month >= 10 and r.Timestamp.day > 5)) and len(r.PersonID) == 24 and loadedJson['event'] == 'log':
             if 'scroll' in loadedJson:
                 loadedJson["scroll"] = []
             if 'M2' in loadedJson:
@@ -258,8 +258,9 @@ def Board():
                 M2.append(loadedJson["M2"])
                 M3.append(loadedJson["M3"])
 
-                M1_1[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-1"])
-                M1_2[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-2"])
+                if hasattr(loadedJson, 'type'):
+                    M1_1[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-1"])
+                    M1_2[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-2"])
                 # M1_3[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-3"])
 
             elif 'UCS' in loadedJson:
