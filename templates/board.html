@@ -355,6 +355,7 @@
                 ds1.cur.cond_101_110.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
               }
             }else if(ucs_cur[i].DS == 2){
+              console.log(ucs_cur[i]);
               if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
                 ds2.cur.cond_100_101.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
               }else if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
@@ -370,8 +371,12 @@
             yaxis: { fixedrange: true, range: [0, 20] }
           };
 
-          console.log(ds2);
-          console.log({{ data3 | tojson }});
+          // console.log(ucs_int);
+          // console.log(ucs_eas);
+          // console.log(ucs_per);
+          // console.log(ucs_tru);
+          // console.log(ucs_cur);
+          // console.log({{ data3 | tojson }});
 
           function drawPlots(){
             data_ds = ds==0?ds0.int:ds==1?ds1.int:ds2.int;

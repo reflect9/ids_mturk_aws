@@ -258,12 +258,15 @@ def Board():
                 M2.append(loadedJson["M2"])
                 M3.append(loadedJson["M3"])
 
+
+
                 if hasattr(loadedJson, 'type'):
                     M1_1[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-1"])
                     M1_2[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-2"])
                 # M1_3[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-3"])
 
             elif 'UCS' in loadedJson:
+                # print(loadedJson)
                 results2.append({
                     "ID": r.PersonID,
                     "Timestamp": [r.Timestamp.month, r.Timestamp.day, r.Timestamp.hour],
