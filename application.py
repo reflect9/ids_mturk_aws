@@ -19,7 +19,7 @@ def fetchTask():
         results.append(r.PersonID)
 
     index = len(set(results)) % 2
-    possibleVersions=[3]
+    possibleVersions=[2]
     possibleTasks = [[100, 101], [101, 100]]
     # possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
     return [possibleVersions[index//6], possibleTasks[index%2]]
