@@ -20,7 +20,7 @@ def fetchTask():
 
     index = len(set(results)) % 4
     possibleVersions=[3]
-    possibleTasks = [[100, 101], [101, 100], [101, 110], [110, 101]]
+    possibleTasks = [[100, 101], [101, 100]]
     # possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
     return [possibleVersions[index//6], possibleTasks[index%6]]
     # return random.sample(possibleTasks,1)[0]
