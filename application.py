@@ -18,9 +18,10 @@ def fetchTask():
     for r in records:
         results.append(r.PersonID)
 
-    index = len(set(results)) % 6
+    index = len(set(results)) % 4
     possibleVersions=[3]
-    possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
+    possibleTasks = [[100, 101], [101, 100], [101, 110], [110, 101]]
+    # possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
     return [possibleVersions[index//6], possibleTasks[index%6]]
     # return random.sample(possibleTasks,1)[0]
 
@@ -245,9 +246,7 @@ def Board():
 
     for r in records:
         loadedJson = json.loads(r.json)
-        if ((r.Timestamp.month >= 8 and r.Timestamp.day > 20) or (r.Timestamp.month >= 10 and r.Timestamp.day > 5)) and len(r.PersonID) == 24 and loadedJson['event'] == 'log':
-            if 'scroll' in loadedJson:
-                loadedJson["scroll"] = []
+        if loadedJson['event'] == 'log':
             if 'M2' in loadedJson:
                 results1.append({
                     "ID": r.PersonID,
@@ -257,8 +256,6 @@ def Board():
                 M1.append(loadedJson["M1-1"])
                 M2.append(loadedJson["M2"])
                 M3.append(loadedJson["M3"])
-
-
 
                 if hasattr(loadedJson, 'type'):
                     M1_1[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-1"])

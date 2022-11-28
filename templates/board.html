@@ -23,18 +23,22 @@
         .hidden {
             display: none;
         }
+
+        ul {
+          padding-inline-start: 20px;
+          margin-block-start: 5px;
+          margin-block-end: 5px;
+          margin-right: 1vw
+        }
     </style>
 </head>
 
 <body>
     <!-- INTRODUCTION PART : Shown first -->
     <div class="intro page">
-        <div class="sticky_header" style="position: sticky; top:24px; z-index:100; background-color:white;">
+        <div class="sticky_header" style="position: sticky; top:0px; z-index:100; background-color:beige; padding:0px 16px;">
           <h1> Testing User Experience of Reading Article on the Web </h1>
-          <label for="name"> Participant <b>Prolific ID</b>:</label>
-          <input type="text" id="pID" name="pID" required size="20">
-          <button onclick="downloadBlob()"> Export as CSV </button>
-          <br><br><br>
+          <br>
           <label for="ds">Choose DS:</label>
           <select name="ds" id="ds" onchange="onChange1()">
             <option value="urb">1: Urbanizaion</option>
@@ -48,13 +52,105 @@
             <option value="SI">Static vs Immersive</option>
             <option value="AI">Animated vs Immersive</option>
           </select>
+          <button style="margin-left: 100px;" onclick="downloadBlob()"> Export as CSV </button>
         </div>
         <br><br><br>
+        <div style="width: 100%; display:flex; flex-direction:column; line-height: 1.5em">
+          <div style="width: 100%; margin-down: 1vw">
+            <h3> Interest </h3>
+            <div style="width: 100%; display:flex; flex-direction:row;">
+              <div style="width: 400px; height:600px;">
+                <div id="plot_int"></div>
+              </div>
+              <div style="width: calc(100% - 400px); display:flex; flex-direction:row;">
+                  {% for scores in [[-3, -2, -1], [0], [3, 2, 1]] %}
+                    <ul id="list_int{{scores[0]}}">
+                      <li> <strong>{{ scores[0] }}</strong> </li>
+                      {% for item in UCS_int if item["score"] in scores %}
+                        <li>{{ item["score"] }}: {{ item["comment"] }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div style="width: 100%; margin-down: 1vw">
+            <h3> Easy to Understand </h3>
+            <div style="width: 100%; display:flex; flex-direction:row;">
+              <div style="width: 400px; height:600px;">
+                <div id="plot_eas"></div>
+              </div>
+              <div style="width: calc(100% - 400px); display:flex; flex-direction:row;">
+                  {% for scores in [[-3, -2, -1], [0], [3, 2, 1]] %}
+                    <ul id="list_eas{{scores[0]}}">
+                      <li> <strong>{{ scores[0] }}</strong> </li>
+                      {% for item in UCS_eas if item["score"] in scores %}
+                        <li>{{ item["score"] }}: {{ item["comment"] }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div style="width: 100%; margin-down: 1vw">
+            <h3> Persuasive </h3>
+            <div style="width: 100%; display:flex; flex-direction:row;">
+              <div style="width: 400px; height:600px;">
+                <div id="plot_per"></div>
+              </div>
+              <div style="width: calc(100% - 400px); display:flex; flex-direction:row;">
+                  {% for scores in [[-3, -2, -1], [0], [3, 2, 1]] %}
+                    <ul id="list_per{{scores[0]}}">
+                      <li> <strong>{{ scores[0] }}</strong> </li>
+                      {% for item in UCS_per if item["score"] in scores %}
+                        <li>{{ item["score"] }}: {{ item["comment"] }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div style="width: 100%; margin-down: 1vw">
+            <h3> Trustworthy </h3>
+            <div style="width: 100%; display:flex; flex-direction:row;">
+              <div style="width: 400px; height:600px;">
+                <div id="plot_tru"></div>
+              </div>
+              <div style="width: calc(100% - 400px); display:flex; flex-direction:row;">
+                  {% for scores in [[-3, -2, -1], [0], [3, 2, 1]] %}
+                    <ul id="list_tru{{scores[0]}}">
+                      <li> <strong>{{ scores[0] }}</strong> </li>
+                      {% for item in UCS_tru if item["score"] in scores %}
+                        <li>{{ item["score"] }}: {{ item["comment"] }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div style="width: 100%; margin-down: 1vw">
+            <h3> Curious </h3>
+            <div style="width: 100%; display:flex; flex-direction:row;">
+              <div style="width: 400px; height:600px;">
+                <div id="plot_cur"></div>
+              </div>
+              <div style="width: calc(100% - 400px); display:flex; flex-direction:row;">
+                  {% for scores in [[-3, -2, -1], [0], [3, 2, 1]] %}
+                    <ul id="list_cur{{scores[0]}}">
+                      <li> <strong>{{ scores[0] }}</strong> </li>
+                      {% for item in UCS_cur if item["score"] in scores %}
+                        <li>{{ item["score"] }}: {{ item["comment"] }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/>
         <div style="width: fit-content; display:flex; flex-direction:row; line-height: 1.5em">
-          <img class="quiz1" src="/Quiz1.JPG" alt="Quiz1" width="800px" height="1200px">
-          <div style="margin: 0px 20px"></div>
           <ul style="font-size:16px; line-height:1.5em;">
-            {% for d in data1[:90] %}
+            {% for d in data1 %}
               <li>{{ d.Json["M1-1"] }} / {{ d.Json["M2"] }} / {{ d.Json["M3"] }}</li>
             {% endfor %}
           </ul>
@@ -72,59 +168,6 @@
           <div id="plot_M131"></div>
           <div id="plot_M132"></div>
         </div>
-        <div style="width: fit-content; display:flex; flex-direction:row; line-height: 1.5em">
-          <div style="width: 16vw; margin-right: 1vw">
-            <h3> Interest </h3>
-            <div id="plot_int"></div>
-            <ul id="list_int">
-              {% for item in UCS_int %}
-                <li>{{ item["score"] }}, {{ item["DS_Task"] }} : <br> {{ item["comment"] }}</li> <br>
-              {% endfor %}
-            </ul>
-          </div>
-          <div style="width: 16vw; margin-right: 1vw">
-            <h3> Easy to Understand </h3>
-            <div id="plot_eas"></div>
-            <ul id="list_eas">
-              {% for item in UCS_eas %}
-                <li>{{ item["score"] }}, {{ item["DS_Task"] }} : <br> {{ item["comment"] }}</li> <br>
-              {% endfor %}
-            </ul>
-          </div>
-          <div style="width: 16vw; margin-right: 1vw">
-            <h3> Persuasive </h3>
-            <div id="plot_per"></div>
-            <ul id="list_per">
-              {% for item in UCS_per %}
-                <li>{{ item["score"] }}, {{ item["DS_Task"] }} : <br> {{ item["comment"] }}</li> <br>
-              {% endfor %}
-            </ul>
-          </div>
-          <div style="width: 16vw; margin-right: 1vw">
-            <h3> Trustworthy </h3>
-            <div id="plot_tru"></div>
-            <ul id="list_tru">
-              {% for item in UCS_tru %}
-                <li>{{ item["score"] }}, {{ item["DS_Task"] }} : <br> {{ item["comment"] }}</li> <br>
-              {% endfor %}
-            </ul>
-          </div>
-          <div style="width: 16vw; margin-right: 1vw">
-            <h3> Curious </h3>
-            <div id="plot_cur"></div>
-            <ul id="list_cur">
-              {% for item in UCS_cur %}
-                <li>{{ item["score"] }}, {{ item["DS_Task"] }} : <br> {{ item["comment"] }}</li> <br>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        <center>
-          <button onclick="start()" style="font-size:24px;">
-              Start Task
-          </button>
-        </center>
 
         <script>
           const hist_int = document.getElementById('plot_int');
@@ -133,15 +176,39 @@
           const hist_tru = document.getElementById('plot_tru');
           const hist_cur = document.getElementById('plot_cur');
 
-          const list_int = document.getElementById('list_int');
-          const list_eas = document.getElementById('list_eas');
-          const list_per = document.getElementById('list_per');
-          const list_tru = document.getElementById('list_tru');
-          const list_cur = document.getElementById('list_cur');
+          const lists = [
+            [
+              document.getElementById('list_int-3'),
+              document.getElementById('list_int0'),
+              document.getElementById('list_int3')
+            ],
+            [
+              document.getElementById('list_eas-3'),
+              document.getElementById('list_eas0'),
+              document.getElementById('list_eas3')
+            ],
+            [
+              document.getElementById('list_per-3'),
+              document.getElementById('list_per0'),
+              document.getElementById('list_per3')
+            ],
+            [
+              document.getElementById('list_tru-3'),
+              document.getElementById('list_tru0'),
+              document.getElementById('list_tru3')
+            ],
+            [
+              document.getElementById('list_cur-3'),
+              document.getElementById('list_cur0'),
+              document.getElementById('list_cur3')
+            ],
+          ]
+
+          const cats = ["int", "eas", "per", "tru", "cur"];
 
           let ds = 0;
           let condition = 0;
-          let ds0 = {
+          const dsFormat = {
             int:{
               cond_100_101: [],
               cond_100_110: [],
@@ -168,379 +235,83 @@
               cond_101_110: [],
             },
           };
-          let ds1 = {
-            int:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            eas:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            per:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            tru:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            cur:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-          };
-          let ds2 = {
-            int:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            eas:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            per:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            tru:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-            cur:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-          };
+          let dss = [dsFormat, dsFormat, dsFormat, dsFormat];
+          const ucss = [
+            {{ UCS_int | tojson }},
+            {{ UCS_eas | tojson }},
+            {{ UCS_per | tojson }},
+            {{ UCS_tru | tojson }},
+            {{ UCS_cur | tojson }}
+          ];
 
-          const ucs_int = {{ UCS_int | tojson }};
-          for(let i=0; i<ucs_int.length; i++){
-            if(ucs_int[i].DS == 0){
-              if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('101')){
-                ds0.int.cond_100_101.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('110')){
-                ds0.int.cond_100_110.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
-                ds0.int.cond_101_110.push(ucs_int[i].DS_Task.includes('101/')?ucs_int[i].score:-ucs_int[i].score);
-              }
-            }else if(ucs_int[i].DS == 1){
-              if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('101')){
-                ds1.int.cond_100_101.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('110')){
-                ds1.int.cond_100_110.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
-                ds1.int.cond_101_110.push(ucs_int[i].DS_Task.includes('101/')?ucs_int[i].score:-ucs_int[i].score);
-              }
-            }else if(ucs_int[i].DS == 2){
-              if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('101')){
-                ds2.int.cond_100_101.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('110')){
-                ds2.int.cond_100_110.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
-                ds2.int.cond_101_110.push(ucs_int[i].DS_Task.includes('101/')?ucs_int[i].score:-ucs_int[i].score);
+          for(let i=0; i<ucss.length; i++){
+            for(let j=0; j<ucss[i].length; j++){
+              if(ucss[i][j].DS_Task.includes('100') && ucss[i][j].DS_Task.includes('101')){
+                dss[ucss[i][j].DS][cats[i]].cond_100_101.push(ucss[i][j].DS_Task.includes('100/')?ucss[i][j].score:-ucss[i][j].score);
+              }else if(ucss[i][j].DS_Task.includes('100') && ucss[i][j].DS_Task.includes('110')){
+                dss[ucss[i][j].DS][cats[i]].cond_100_110.push(ucss[i][j].DS_Task.includes('100/')?ucss[i][j].score:-ucss[i][j].score);
+              }else if(ucss[i][j].DS_Task.includes('101') && ucss[i][j].DS_Task.includes('110')){
+                dss[ucss[i][j].DS][cats[i]].cond_101_110.push(ucss[i][j].DS_Task.includes('101/')?ucss[i][j].score:-ucss[i][j].score);
               }
             }
           }
-          const ucs_eas = {{ UCS_eas | tojson }};
-          for(let i=0; i<ucs_eas.length; i++){
-            if(ucs_eas[i].DS == 0){
-              if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('101')){
-                ds0.eas.cond_100_101.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('110')){
-                ds0.eas.cond_100_110.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('101') && ucs_eas[i].DS_Task.includes('110')){
-                ds0.eas.cond_101_110.push(ucs_eas[i].DS_Task.includes('101/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }
-            }else if(ucs_eas[i].DS == 1){
-              if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('101')){
-                ds1.eas.cond_100_101.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('110')){
-                ds1.eas.cond_100_110.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('101') && ucs_eas[i].DS_Task.includes('110')){
-                ds1.eas.cond_101_110.push(ucs_eas[i].DS_Task.includes('101/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }
-            }
-            else if(ucs_eas[i].DS == 2){
-              if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('101')){
-                ds2.eas.cond_100_101.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('110')){
-                ds2.eas.cond_100_110.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('101') && ucs_eas[i].DS_Task.includes('110')){
-                ds2.eas.cond_101_110.push(ucs_eas[i].DS_Task.includes('101/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }
-            }
-          }
-          const ucs_per = {{ UCS_per | tojson }};
-          for(let i=0; i<ucs_per.length; i++){
-            if(ucs_per[i].DS == 0){
-              if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('101')){
-                ds0.per.cond_100_101.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('110')){
-                ds0.per.cond_100_110.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
-                ds0.per.cond_101_110.push(ucs_per[i].DS_Task.includes('101/')?ucs_per[i].score:-ucs_per[i].score);
-              }
-            }else if(ucs_per[i].DS == 1){
-              if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('101')){
-                ds1.per.cond_100_101.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('110')){
-                ds1.per.cond_100_110.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
-                ds1.per.cond_101_110.push(ucs_per[i].DS_Task.includes('101/')?ucs_per[i].score:-ucs_per[i].score);
-              }
-            }else if(ucs_per[i].DS == 2){
-              if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('101')){
-                ds2.per.cond_100_101.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('110')){
-                ds2.per.cond_100_110.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
-                ds2.per.cond_101_110.push(ucs_per[i].DS_Task.includes('101/')?ucs_per[i].score:-ucs_per[i].score);
-              }
-            }
-          }
-          const ucs_tru = {{ UCS_tru | tojson }};
-          for(let i=0; i<ucs_tru.length; i++){
-            if(ucs_tru[i].DS == 0){
-              if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('101')){
-                ds0.tru.cond_100_101.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('110')){
-                ds0.tru.cond_100_110.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
-                ds0.tru.cond_101_110.push(ucs_tru[i].DS_Task.includes('101/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }
-            }else if(ucs_tru[i].DS == 1){
-              if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('101')){
-                ds1.tru.cond_100_101.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('110')){
-                ds1.tru.cond_100_110.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
-                ds1.tru.cond_101_110.push(ucs_tru[i].DS_Task.includes('101/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }
-            }else if(ucs_tru[i].DS == 2){
-              if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('101')){
-                ds2.tru.cond_100_101.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('110')){
-                ds2.tru.cond_100_110.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
-                ds2.tru.cond_101_110.push(ucs_tru[i].DS_Task.includes('101/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }
-            }
-          }
-          const ucs_cur = {{ UCS_cur | tojson }};
-          for(let i=0; i<ucs_cur.length; i++){
-            if(ucs_cur[i].DS == 0){
-              if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
-                ds0.cur.cond_100_101.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
-                ds0.cur.cond_100_110.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
-                ds0.cur.cond_101_110.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }
-            }else if(ucs_cur[i].DS == 1){
-              if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
-                ds1.cur.cond_100_101.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
-                ds1.cur.cond_100_110.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
-                ds1.cur.cond_101_110.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }
-            }else if(ucs_cur[i].DS == 2){
-              console.log(ucs_cur[i]);
-              if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
-                ds2.cur.cond_100_101.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
-                ds2.cur.cond_100_110.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
-                ds2.cur.cond_101_110.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }
-            }
-          }
+
           const layout = {
             barmode:"overlay",
             xaxis: { fixedrange: true, range: [-3.5, 3.5], showticklabels: true },
             yaxis: { fixedrange: true, range: [0, 20] }
           };
 
-          // console.log(ucs_int);
-          // console.log(ucs_eas);
-          // console.log(ucs_per);
-          // console.log(ucs_tru);
-          // console.log(ucs_cur);
-          // console.log({{ data3 | tojson }});
-
           function drawPlots(){
-            data_ds = ds==0?ds0.int:ds==1?ds1.int:ds2.int;
-            data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
-            Plotly.newPlot(hist_int, [{
-              x: data_condition,
-              type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
-            }], layout);
-            data_ds = ds==0?ds0.eas:ds==1?ds1.eas:ds2.eas;
-            data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
-            Plotly.newPlot(hist_eas, [{
-              x: data_condition,
-              type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
-            }], layout);
-            data_ds = ds==0?ds0.per:ds==1?ds1.per:ds2.per;
-            data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
-            Plotly.newPlot(hist_per, [{
-              x: data_condition,
-              type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
-            }], layout);
-            data_ds = ds==0?ds0.tru:ds==1?ds1.tru:ds2.tru;
-            data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
-            Plotly.newPlot(hist_tru, [{
-              x: data_condition,
-              type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
-            }], layout);
-            data_ds = ds==0?ds0.cur:ds==1?ds1.cur:ds2.cur;
-            data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
-            Plotly.newPlot(hist_cur, [{
-              x: data_condition,
-              type: 'histogram', opacity: 0.5, autobinx: false, histnorm: "count", marker:{ color: 'green' }, xbins: { end: 3.5, size: 1, start: -3.5 }
-            }], layout);
+            let hists = [hist_int, hist_eas, hist_per, hist_tru, hist_cur];
+            for(let i=0; i<5; i++){
+              data_ds = dss[ds][cats[i]];
+              data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
+              Plotly.newPlot(hists[i], [{
+                x: data_condition,
+                type: 'histogram',
+                opacity: 0.5,
+                autobinx: false,
+                histnorm: "count",
+                marker:{ color: 'green' },
+                xbins: { end: 3.5, size: 1, start: -3.5 }
+              }], layout);
+            }
           }
 
           function changeLists(){
-            list_int.innerHTML = "";
-            list_eas.innerHTML = "";
-            list_per.innerHTML = "";
-            list_tru.innerHTML = "";
-            list_cur.innerHTML = "";
-
-            let list_int_arr = [];
-            for(let i=0; i<ucs_int.length; i++){
-              if(ucs_int[i].DS == ds){
-                if(condition == 0 && ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('101')){
-                  list_int_arr.push([
-                    "<li>" + String(ucs_int[i].FirstTask==100?ucs_int[i].score:-ucs_int[i].score) + ": " + ucs_int[i].comment + "</li>", ucs_int[i].FirstTask==100?ucs_int[i].score:-ucs_int[i].score
-                  ])
-                }else if(condition == 1 && ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('110')){
-                  list_int_arr.push([
-                    "<li>" + String(ucs_int[i].FirstTask==100?ucs_int[i].score:-ucs_int[i].score) + ": " + ucs_int[i].comment + "</li>", ucs_int[i].FirstTask==100?ucs_int[i].score:-ucs_int[i].score
-                  ])
-                }else if(condition == 2 && ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
-                  list_int_arr.push([
-                    "<li>" + String(ucs_int[i].FirstTask==101?ucs_int[i].score:-ucs_int[i].score) + ": " + ucs_int[i].comment + "</li>", ucs_int[i].FirstTask==101?ucs_int[i].score:-ucs_int[i].score
-                  ])
-                }
+            for(let j=0; j<lists.length; j++){
+              for(let i=0; i<3; i++){
+                lists[j][i].innerHTML = "";
               }
             }
-            list_int_arr.sort((a, b)=>{
-              return b[1]-a[1];
-            });
-            for(let i=0; i<list_int_arr.length; i++){
-              list_int.innerHTML += list_int_arr[i][0];
-            }
+            let list_arr = [[], [], [], [], []];
 
-            let list_eas_arr = [];
-            for(let i=0; i<ucs_eas.length; i++){
-              if(ucs_eas[i].DS == ds){
-                if(condition == 0 && ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('101')){
-                  list_eas_arr.push([
-                    "<li>" + String(ucs_eas[i].FirstTask==100?ucs_eas[i].score:-ucs_eas[i].score) + ": " + ucs_eas[i].comment + "</li>", ucs_eas[i].FirstTask==100?ucs_eas[i].score:-ucs_eas[i].score
-                  ])
-                }else if(condition == 1 && ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('110')){
-                  list_eas_arr.push([
-                    "<li>" + String(ucs_eas[i].FirstTask==100?ucs_eas[i].score:-ucs_eas[i].score) + ": " + ucs_eas[i].comment + "</li>", ucs_eas[i].FirstTask==100?ucs_eas[i].score:-ucs_eas[i].score
-                  ])
-                }else if(condition == 2 && ucs_eas[i].DS_Task.includes('101') && ucs_eas[i].DS_Task.includes('110')){
-                  list_eas_arr.push([
-                    "<li>" + String(ucs_eas[i].FirstTask==101?ucs_eas[i].score:-ucs_eas[i].score) + ": " + ucs_eas[i].comment + "</li>", ucs_eas[i].FirstTask==101?ucs_eas[i].score:-ucs_eas[i].score
-                  ])
+            for(let j=0; j<ucss.length; j++){
+              for(let i=0; i<ucss[j].length; i++){
+                if(ucss[j][i].DS == ds){
+                  if(condition == 0 && ucss[j][i].DS_Task.includes('100') && ucss[j][i].DS_Task.includes('101')){
+                    list_arr[j].push([
+                      "<li>" + String(ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score
+                    ])
+                  }else if(condition == 1 && ucss[j][i].DS_Task.includes('100') && ucss[j][i].DS_Task.includes('110')){
+                    list_arr[j].push([
+                      "<li>" + String(ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score
+                    ])
+                  }else if(condition == 2 && ucss[j][i].DS_Task.includes('101') && ucss[j][i].DS_Task.includes('110')){
+                    list_arr[j].push([
+                      "<li>" + String(ucss[j][i].FirstTask==101?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==101?ucss[j][i].score:-ucss[j][i].score
+                    ])
+                  }
                 }
               }
-            }
-            list_eas_arr.sort((a, b)=>{
-              return b[1]-a[1];
-            });
-            for(let i=0; i<list_eas_arr.length; i++){
-              list_eas.innerHTML += list_eas_arr[i][0];
-            }
-
-            let list_per_arr = [];
-            for(let i=0; i<ucs_per.length; i++){
-              if(ucs_per[i].DS == ds){
-                if(condition == 0 && ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('101')){
-                  list_per_arr.push([
-                    "<li>" + String(ucs_per[i].FirstTask==100?ucs_per[i].score:-ucs_per[i].score) + ": " + ucs_per[i].comment + "</li>", ucs_per[i].FirstTask==100?ucs_per[i].score:-ucs_per[i].score
-                  ])
-                }else if(condition == 1 && ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('110')){
-                  list_per_arr.push([
-                    "<li>" + String(ucs_per[i].FirstTask==100?ucs_per[i].score:-ucs_per[i].score) + ": " + ucs_per[i].comment + "</li>", ucs_per[i].FirstTask==100?ucs_per[i].score:-ucs_per[i].score
-                  ])
-                }else if(condition == 2 && ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
-                  list_per_arr.push([
-                    "<li>" + String(ucs_per[i].FirstTask==101?ucs_per[i].score:-ucs_per[i].score) + ": " + ucs_per[i].comment + "</li>", ucs_per[i].FirstTask==101?ucs_per[i].score:-ucs_per[i].score
-                  ])
-                }
+              list_arr[j].sort((a, b)=>{
+                return b[1]-a[1];
+              });
+              for(let i=0; i<list_arr[j].length; i++){
+                let temp = list_arr[j][i][1]<0?0:list_arr[j][i][1]==0?1:2;
+                lists[j][temp].innerHTML += list_arr[j][i][0];
               }
-            }
-            list_per_arr.sort((a, b)=>{
-              return b[1]-a[1];
-            });
-            for(let i=0; i<list_per_arr.length; i++){
-              list_per.innerHTML += list_per_arr[i][0];
-            }
-
-            let list_tru_arr = [];
-            for(let i=0; i<ucs_tru.length; i++){
-              if(ucs_tru[i].DS == ds){
-                if(condition == 0 && ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('101')){
-                  list_tru_arr.push([
-                    "<li>" + String(ucs_tru[i].FirstTask==100?ucs_tru[i].score:-ucs_tru[i].score) + ": " + ucs_tru[i].comment + "</li>", ucs_tru[i].FirstTask==100?ucs_tru[i].score:-ucs_tru[i].score
-                  ])
-                }else if(condition == 1 && ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('110')){
-                  list_tru_arr.push([
-                    "<li>" + String(ucs_tru[i].FirstTask==100?ucs_tru[i].score:-ucs_tru[i].score) + ": " + ucs_tru[i].comment + "</li>", ucs_tru[i].FirstTask==100?ucs_tru[i].score:-ucs_tru[i].score
-                  ])
-                }else if(condition == 2 && ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
-                  list_tru_arr.push([
-                    "<li>" + String(ucs_tru[i].FirstTask==101?ucs_tru[i].score:-ucs_tru[i].score) + ": " + ucs_tru[i].comment + "</li>", ucs_tru[i].FirstTask==101?ucs_tru[i].score:-ucs_tru[i].score
-                  ])
-                }
-              }
-            }
-            list_tru_arr.sort((a, b)=>{
-              return b[1]-a[1];
-            });
-            for(let i=0; i<list_tru_arr.length; i++){
-              list_tru.innerHTML += list_tru_arr[i][0];
-            }
-
-            let list_cur_arr = [];
-            for(let i=0; i<ucs_cur.length; i++){
-              if(ucs_cur[i].DS == ds){
-                if(condition == 0 && ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
-                  list_cur_arr.push([
-                    "<li>" + String(ucs_cur[i].FirstTask==100?ucs_cur[i].score:-ucs_cur[i].score) + ": " + ucs_cur[i].comment + "</li>", ucs_cur[i].FirstTask==100?ucs_cur[i].score:-ucs_cur[i].score
-                  ])
-                }else if(condition == 1 && ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
-                  list_cur_arr.push([
-                    "<li>" + String(ucs_cur[i].FirstTask==100?ucs_cur[i].score:-ucs_cur[i].score) + ": " + ucs_cur[i].comment + "</li>", ucs_cur[i].FirstTask==100?ucs_cur[i].score:-ucs_cur[i].score
-                  ])
-                }else if(condition == 2 && ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
-                  list_cur_arr.push([
-                    "<li>" + String(ucs_cur[i].FirstTask==101?ucs_cur[i].score:-ucs_cur[i].score) + ": " + ucs_cur[i].comment + "</li>", ucs_cur[i].FirstTask==101?ucs_cur[i].score:-ucs_cur[i].score
-                  ])
-                }
-              }
-            }
-            list_cur_arr.sort((a, b)=>{
-              return b[1]-a[1];
-            });
-            for(let i=0; i<list_cur_arr.length; i++){
-              list_cur.innerHTML += list_cur_arr[i][0];
             }
           }
 
