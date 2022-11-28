@@ -208,34 +208,116 @@
 
           let ds = 0;
           let condition = 0;
-          const dsFormat = {
-            int:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
+          let dss = [
+            {
+              int:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              eas:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              per:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              tru:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              cur:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
             },
-            eas:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
+            {
+              int:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              eas:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              per:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              tru:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              cur:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
             },
-            per:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
+            {
+              int:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              eas:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              per:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              tru:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              cur:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
             },
-            tru:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
+            {
+              int:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              eas:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              per:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              tru:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
+              cur:{
+                cond_100_101: [],
+                cond_100_110: [],
+                cond_101_110: [],
+              },
             },
-            cur:{
-              cond_100_101: [],
-              cond_100_110: [],
-              cond_101_110: [],
-            },
-          };
-          let dss = [dsFormat, dsFormat, dsFormat, dsFormat];
+          ];
           const ucss = [
             {{ UCS_int | tojson }},
             {{ UCS_eas | tojson }},
@@ -245,7 +327,9 @@
           ];
 
           for(let i=0; i<ucss.length; i++){
+            console.log(ucss[i][0]);
             for(let j=0; j<ucss[i].length; j++){
+              console.log(ucss[i][j].DS);
               if(ucss[i][j].DS_Task.includes('100') && ucss[i][j].DS_Task.includes('101')){
                 dss[ucss[i][j].DS][cats[i]].cond_100_101.push(ucss[i][j].DS_Task.includes('100/')?ucss[i][j].score:-ucss[i][j].score);
               }else if(ucss[i][j].DS_Task.includes('100') && ucss[i][j].DS_Task.includes('110')){
@@ -334,214 +418,215 @@
           function dataToArray(){
             const demos = {{ data3 | tojson }};
             let result = [["ID", "AGE", "English Reading Proficiency", "Number of Articles Reading on Web", "Gender", "Highest Educational Level", "DS##", "Cond_1", "CondCode_1", "Cond_2", "CondCode_2", "FirstSeen", "Score", "Factor", "Comment"]];
-            for(let i=0; i<ucs_int.length; i++){
+
+            for(let i=0; i<ucss[0].length; i++){
               let temp = [];
               // ID
-              temp.push(ucs_int[i].ID);
+              temp.push(ucss[0][i].ID);
               // Demo
-              let demo = demos.find(ele => ele.ID == ucs_int[i].ID);
+              let demo = demos.find(ele => ele.ID == ucss[0][i].ID);
               temp.push(demo!=undefined?demo.Json.AGE:"not found");
               temp.push(demo!=undefined?demo.Json.ERP:"not found");
               temp.push(demo!=undefined?demo.Json.FOW:"not found");
               temp.push(demo!=undefined?demo.Json.GEN:"not found");
               temp.push(demo!=undefined?demo.Json.HEL:"not found");
               // DS##
-              temp.push(ucs_int[i].DS);
+              temp.push(ucss[0][i].DS);
               // Conds, Score
-              if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('101')){
+              if(ucss[0][i].DS_Task.includes('100') && ucss[0][i].DS_Task.includes('101')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Animated");
                 temp.push(101);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
-                temp.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('100') && ucs_int[i].DS_Task.includes('110')){
+                temp.push(ucss[0][i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucss[0][i].DS_Task.includes('100/')?ucss[0][i].score:-ucss[0][i].score);
+              }else if(ucss[0][i].DS_Task.includes('100') && ucss[0][i].DS_Task.includes('110')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
-                temp.push(ucs_int[i].DS_Task.includes('100/')?ucs_int[i].score:-ucs_int[i].score);
-              }else if(ucs_int[i].DS_Task.includes('101') && ucs_int[i].DS_Task.includes('110')){
+                temp.push(ucss[0][i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucss[0][i].DS_Task.includes('100/')?ucss[0][i].score:-ucss[0][i].score);
+              }else if(ucss[0][i].DS_Task.includes('101') && ucss[0][i].DS_Task.includes('110')){
                 temp.push("Animated");
                 temp.push(101);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
-                temp.push(ucs_int[i].DS_Task.includes('101/')?ucs_int[i].score:-ucs_int[i].score);
+                temp.push(ucss[0][i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucss[0][i].DS_Task.includes('101/')?ucss[0][i].score:-ucss[0][i].score);
               }
               // Factor
               temp.push("INT");
               // Comment
-              temp.push(ucs_int[i].comment);
+              temp.push(ucss[0][i].comment);
               result.push(temp);
             }
-            for(let i=0; i<ucs_eas.length; i++){
+            for(let i=0; i<ucss[1].length; i++){
               let temp = [];
               // ID
-              temp.push(ucs_eas[i].ID);
+              temp.push(ucss[1][i].ID);
               // Demo
-              let demo = demos.find(ele => ele.ID == ucs_eas[i].ID);
+              let demo = demos.find(ele => ele.ID == ucss[1][i].ID);
               temp.push(demo!=undefined?demo.Json.AGE:"not found");
               temp.push(demo!=undefined?demo.Json.ERP:"not found");
               temp.push(demo!=undefined?demo.Json.FOW:"not found");
               temp.push(demo!=undefined?demo.Json.GEN:"not found");
               temp.push(demo!=undefined?demo.Json.HEL:"not found");
               // DS##
-              temp.push(ucs_eas[i].DS);
+              temp.push(ucss[1][i].DS);
               // Conds, Score
-              if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('101')){
+              if(ucss[1][i].DS_Task.includes('100') && ucss[1][i].DS_Task.includes('101')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Animated");
                 temp.push(101);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
-                temp.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('100') && ucs_eas[i].DS_Task.includes('110')){
+                temp.push(ucss[1][i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucss[1][i].DS_Task.includes('100/')?ucss[1][i].score:-ucss[1][i].score);
+              }else if(ucss[1][i].DS_Task.includes('100') && ucss[1][i].DS_Task.includes('110')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
-                temp.push(ucs_eas[i].DS_Task.includes('100/')?ucs_eas[i].score:-ucs_eas[i].score);
-              }else if(ucs_eas[i].DS_Task.includes('101') && ucs_eas[i].DS_Task.includes('110')){
+                temp.push(ucss[1][i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucss[1][i].DS_Task.includes('100/')?ucss[1][i].score:-ucss[1][i].score);
+              }else if(ucss[1][i].DS_Task.includes('101') && ucss[1][i].DS_Task.includes('110')){
                 temp.push("Animated");
                 temp.push(101);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
-                temp.push(ucs_eas[i].DS_Task.includes('101/')?ucs_eas[i].score:-ucs_eas[i].score);
+                temp.push(ucss[1][i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucss[1][i].DS_Task.includes('101/')?ucss[1][i].score:-ucss[1][i].score);
               }
               // Factor
               temp.push("EAS");
               // Comment
-              temp.push(ucs_eas[i].comment);
+              temp.push(ucss[1][i].comment);
               result.push(temp);
             }
-            for(let i=0; i<ucs_per.length; i++){
+            for(let i=0; i<ucss[2].length; i++){
               let temp = [];
               // ID
-              temp.push(ucs_per[i].ID);
+              temp.push(ucss[2][i].ID);
               // Demo
-              let demo = demos.find(ele => ele.ID == ucs_per[i].ID);
+              let demo = demos.find(ele => ele.ID == ucss[2][i].ID);
               temp.push(demo!=undefined?demo.Json.AGE:"not found");
               temp.push(demo!=undefined?demo.Json.ERP:"not found");
               temp.push(demo!=undefined?demo.Json.FOW:"not found");
               temp.push(demo!=undefined?demo.Json.GEN:"not found");
               temp.push(demo!=undefined?demo.Json.HEL:"not found");
               // DS##
-              temp.push(ucs_per[i].DS);
+              temp.push(ucss[2][i].DS);
               // Conds, Score
-              if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('101')){
+              if(ucss[2][i].DS_Task.includes('100') && ucss[2][i].DS_Task.includes('101')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Animated");
                 temp.push(101);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
-                temp.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('100') && ucs_per[i].DS_Task.includes('110')){
+                temp.push(ucss[2][i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucss[2][i].DS_Task.includes('100/')?ucss[2][i].score:-ucss[2][i].score);
+              }else if(ucss[2][i].DS_Task.includes('100') && ucss[2][i].DS_Task.includes('110')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
-                temp.push(ucs_per[i].DS_Task.includes('100/')?ucs_per[i].score:-ucs_per[i].score);
-              }else if(ucs_per[i].DS_Task.includes('101') && ucs_per[i].DS_Task.includes('110')){
+                temp.push(ucss[2][i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucss[2][i].DS_Task.includes('100/')?ucss[2][i].score:-ucss[2][i].score);
+              }else if(ucss[2][i].DS_Task.includes('101') && ucss[2][i].DS_Task.includes('110')){
                 temp.push("Animated");
                 temp.push(101);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
-                temp.push(ucs_per[i].DS_Task.includes('101/')?ucs_per[i].score:-ucs_per[i].score);
+                temp.push(ucss[2][i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucss[2][i].DS_Task.includes('101/')?ucss[2][i].score:-ucss[2][i].score);
               }
               // Factor
               temp.push("PER");
               // Comment
-              temp.push(ucs_per[i].comment);
+              temp.push(ucss[2][i].comment);
               result.push(temp);
             }
-            for(let i=0; i<ucs_tru.length; i++){
+            for(let i=0; i<ucss[3].length; i++){
               let temp = [];
               // ID
-              temp.push(ucs_tru[i].ID);
+              temp.push(ucss[3][i].ID);
               // Demo
-              let demo = demos.find(ele => ele.ID == ucs_tru[i].ID);
+              let demo = demos.find(ele => ele.ID == ucss[3][i].ID);
               temp.push(demo!=undefined?demo.Json.AGE:"not found");
               temp.push(demo!=undefined?demo.Json.ERP:"not found");
               temp.push(demo!=undefined?demo.Json.FOW:"not found");
               temp.push(demo!=undefined?demo.Json.GEN:"not found");
               temp.push(demo!=undefined?demo.Json.HEL:"not found");
               // DS##
-              temp.push(ucs_tru[i].DS);
+              temp.push(ucss[3][i].DS);
               // Conds, Score
-              if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('101')){
+              if(ucss[3][i].DS_Task.includes('100') && ucss[3][i].DS_Task.includes('101')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Animated");
                 temp.push(101);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
-                temp.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('100') && ucs_tru[i].DS_Task.includes('110')){
+                temp.push(ucss[3][i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucss[3][i].DS_Task.includes('100/')?ucss[3][i].score:-ucss[3][i].score);
+              }else if(ucss[3][i].DS_Task.includes('100') && ucss[3][i].DS_Task.includes('110')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
-                temp.push(ucs_tru[i].DS_Task.includes('100/')?ucs_tru[i].score:-ucs_tru[i].score);
-              }else if(ucs_tru[i].DS_Task.includes('101') && ucs_tru[i].DS_Task.includes('110')){
+                temp.push(ucss[3][i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucss[3][i].DS_Task.includes('100/')?ucss[3][i].score:-ucss[3][i].score);
+              }else if(ucss[3][i].DS_Task.includes('101') && ucss[3][i].DS_Task.includes('110')){
                 temp.push("Animated");
                 temp.push(101);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
-                temp.push(ucs_tru[i].DS_Task.includes('101/')?ucs_tru[i].score:-ucs_tru[i].score);
+                temp.push(ucss[3][i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucss[3][i].DS_Task.includes('101/')?ucss[3][i].score:-ucss[3][i].score);
               }
               // Factor
               temp.push("TRU");
               // Comment
-              temp.push(ucs_tru[i].comment);
+              temp.push(ucss[3][i].comment);
               result.push(temp);
             }
-            for(let i=0; i<ucs_cur.length; i++){
+            for(let i=0; i<ucss[4].length; i++){
               let temp = [];
               // ID
-              temp.push(ucs_cur[i].ID);
+              temp.push(ucss[4][i].ID);
               // Demo
-              let demo = demos.find(ele => ele.ID == ucs_cur[i].ID);
+              let demo = demos.find(ele => ele.ID == ucss[4][i].ID);
               temp.push(demo!=undefined?demo.Json.AGE:"not found");
               temp.push(demo!=undefined?demo.Json.ERP:"not found");
               temp.push(demo!=undefined?demo.Json.FOW:"not found");
               temp.push(demo!=undefined?demo.Json.GEN:"not found");
               temp.push(demo!=undefined?demo.Json.HEL:"not found");
               // DS##
-              temp.push(ucs_cur[i].DS);
+              temp.push(ucss[4][i].DS);
               // Conds, Score
-              if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('101')){
+              if(ucss[4][i].DS_Task.includes('100') && ucss[4][i].DS_Task.includes('101')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Animated");
                 temp.push(101);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Animated");
-                temp.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('100') && ucs_cur[i].DS_Task.includes('110')){
+                temp.push(ucss[4][i].DS_Task.includes('100/')?"Static":"Animated");
+                temp.push(ucss[4][i].DS_Task.includes('100/')?ucss[4][i].score:-ucss[4][i].score);
+              }else if(ucss[4][i].DS_Task.includes('100') && ucss[4][i].DS_Task.includes('110')){
                 temp.push("Static");
                 temp.push(100);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('100/')?"Static":"Immersive");
-                temp.push(ucs_cur[i].DS_Task.includes('100/')?ucs_cur[i].score:-ucs_cur[i].score);
-              }else if(ucs_cur[i].DS_Task.includes('101') && ucs_cur[i].DS_Task.includes('110')){
+                temp.push(ucss[4][i].DS_Task.includes('100/')?"Static":"Immersive");
+                temp.push(ucss[4][i].DS_Task.includes('100/')?ucss[4][i].score:-ucss[4][i].score);
+              }else if(ucss[4][i].DS_Task.includes('101') && ucss[4][i].DS_Task.includes('110')){
                 temp.push("Animated");
                 temp.push(101);
                 temp.push("Immersive");
                 temp.push(110);
-                temp.push(ucs_int[i].DS_Task.includes('101/')?"Animated":"Immersive");
-                temp.push(ucs_cur[i].DS_Task.includes('101/')?ucs_cur[i].score:-ucs_cur[i].score);
+                temp.push(ucss[4][i].DS_Task.includes('101/')?"Animated":"Immersive");
+                temp.push(ucss[4][i].DS_Task.includes('101/')?ucss[4][i].score:-ucss[4][i].score);
               }
               // Factor
               temp.push("CUR");
               // Comment
-              temp.push(ucs_cur[i].comment);
+              temp.push(ucss[4][i].comment);
               result.push(temp);
             }
 

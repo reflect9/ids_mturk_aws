@@ -19,8 +19,8 @@ def fetchTask():
         results.append(r.PersonID)
 
     index = len(set(results)) % 2
-    possibleVersions=[2]
-    possibleTasks = [[101, 110], [110, 101]]
+    possibleVersions=[1]
+    possibleTasks = [[100, 110], [110, 100]]
     # possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
     return [possibleVersions[index//6], possibleTasks[index%2]]
     # return random.sample(possibleTasks,1)[0]
