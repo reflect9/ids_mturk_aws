@@ -45,6 +45,7 @@
             <option value="hap">2: Happiness</option>
             <option value="snp">3: COVID S&P</option>
             <option value="mor">4: Mortality Rate</option>
+            <option value="tot">0: Total</option>
           </select>
           <label for="condition">Choose Condition:</label>
           <select name="condition" id="condition" onchange="onChange2()">
@@ -55,9 +56,9 @@
           <button style="margin-left: 100px;" onclick="downloadBlob()"> Export as CSV </button>
         </div>
         <br><br><br>
-        <div style="width: 100%; display:flex; flex-direction:column; line-height: 1.5em">
+        <div id="indiv-plots" style="width: 100%; display:flex; flex-direction:column; line-height: 1.5em">
           <div style="width: 100%; margin-down: 1vw">
-            <h3> Interest </h3>
+            <h3> Interesting </h3>
             <div style="width: 100%; display:flex; flex-direction:row;">
               <div style="width: 400px; height:600px;">
                 <div id="plot_int"></div>
@@ -147,6 +148,60 @@
             </div>
           </div>
         </div>
+        <div id="total-plots" style="width: 100%; display:flex; flex-direction:row; line-height: 1.5em">
+          <div style="width: 20%;">
+            <h3> DS1 </h3>
+            <h3> Interesting </h3>
+            <div id="ds0-plot-int"></div>
+            <h3> Easy to Understand </h3>
+            <div id="ds0-plot-eas"></div>
+            <h3> Persuasive </h3>
+            <div id="ds0-plot-per"></div>
+            <h3> Trustworthy </h3>
+            <div id="ds0-plot-tru"></div>
+            <h3> Curious </h3>
+            <div id="ds0-plot-cur"></div>
+          </div>
+          <div style="width: 20%;">
+            <h3> DS2 </h3>
+            <h3> . </h3>
+            <div id="ds1-plot-int"></div>
+            <h3> . </h3>
+            <div id="ds1-plot-eas"></div>
+            <h3> . </h3>
+            <div id="ds1-plot-per"></div>
+            <h3> . </h3>
+            <div id="ds1-plot-tru"></div>
+            <h3> . </h3>
+            <div id="ds1-plot-cur"></div>
+          </div>
+          <div style="width: 20%;">
+            <h3> DS3 </h3>
+            <h3> . </h3>
+            <div id="ds2-plot-int"></div>
+            <h3> . </h3>
+            <div id="ds2-plot-eas"></div>
+            <h3> . </h3>
+            <div id="ds2-plot-per"></div>
+            <h3> . </h3>
+            <div id="ds2-plot-tru"></div>
+            <h3> . </h3>
+            <div id="ds2-plot-cur"></div>
+          </div>
+          <div style="width: 20%;">
+            <h3> DS4 </h3>
+            <h3> . </h3>
+            <div id="ds3-plot-int"></div>
+            <h3> . </h3>
+            <div id="ds3-plot-eas"></div>
+            <h3> . </h3>
+            <div id="ds3-plot-per"></div>
+            <h3> . </h3>
+            <div id="ds3-plot-tru"></div>
+            <h3> . </h3>
+            <div id="ds3-plot-cur"></div>
+          </div>
+        </div>
         <br/>
         <div style="width: fit-content; display:flex; flex-direction:row; line-height: 1.5em">
           <ul style="font-size:16px; line-height:1.5em;">
@@ -170,40 +225,6 @@
         </div>
 
         <script>
-          const hist_int = document.getElementById('plot_int');
-          const hist_eas = document.getElementById('plot_eas');
-          const hist_per = document.getElementById('plot_per');
-          const hist_tru = document.getElementById('plot_tru');
-          const hist_cur = document.getElementById('plot_cur');
-
-          const lists = [
-            [
-              document.getElementById('list_int-3'),
-              document.getElementById('list_int0'),
-              document.getElementById('list_int3')
-            ],
-            [
-              document.getElementById('list_eas-3'),
-              document.getElementById('list_eas0'),
-              document.getElementById('list_eas3')
-            ],
-            [
-              document.getElementById('list_per-3'),
-              document.getElementById('list_per0'),
-              document.getElementById('list_per3')
-            ],
-            [
-              document.getElementById('list_tru-3'),
-              document.getElementById('list_tru0'),
-              document.getElementById('list_tru3')
-            ],
-            [
-              document.getElementById('list_cur-3'),
-              document.getElementById('list_cur0'),
-              document.getElementById('list_cur3')
-            ],
-          ]
-
           const cats = ["int", "eas", "per", "tru", "cur"];
 
           let ds = 0;
@@ -327,9 +348,7 @@
           ];
 
           for(let i=0; i<ucss.length; i++){
-            console.log(ucss[i][0]);
             for(let j=0; j<ucss[i].length; j++){
-              console.log(ucss[i][j].DS);
               if(ucss[i][j].DS_Task.includes('100') && ucss[i][j].DS_Task.includes('101')){
                 dss[ucss[i][j].DS][cats[i]].cond_100_101.push(ucss[i][j].DS_Task.includes('100/')?ucss[i][j].score:-ucss[i][j].score);
               }else if(ucss[i][j].DS_Task.includes('100') && ucss[i][j].DS_Task.includes('110')){
@@ -347,54 +366,155 @@
           };
 
           function drawPlots(){
-            let hists = [hist_int, hist_eas, hist_per, hist_tru, hist_cur];
-            for(let i=0; i<5; i++){
-              data_ds = dss[ds][cats[i]];
-              data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
-              Plotly.newPlot(hists[i], [{
-                x: data_condition,
-                type: 'histogram',
-                opacity: 0.5,
-                autobinx: false,
-                histnorm: "count",
-                marker:{ color: 'green' },
-                xbins: { end: 3.5, size: 1, start: -3.5 }
-              }], layout);
+            if(ds<4){
+              document.getElementById("indiv-plots").style.visibility = 'visible';
+              document.getElementById("indiv-plots").style.height = 'fit-content';
+              document.getElementById("total-plots").style.visibility = 'hidden';
+              document.getElementById("total-plots").style.height = '0px';
+
+              const hist_int = document.getElementById('plot_int');
+              const hist_eas = document.getElementById('plot_eas');
+              const hist_per = document.getElementById('plot_per');
+              const hist_tru = document.getElementById('plot_tru');
+              const hist_cur = document.getElementById('plot_cur');
+
+              let hists = [hist_int, hist_eas, hist_per, hist_tru, hist_cur];
+              for(let i=0; i<5; i++){
+                data_ds = dss[ds][cats[i]];
+                data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
+                Plotly.newPlot(hists[i], [{
+                  x: data_condition,
+                  type: 'histogram',
+                  opacity: 0.5,
+                  autobinx: false,
+                  histnorm: "count",
+                  marker:{ color: 'green' },
+                  xbins: { end: 3.5, size: 1, start: -3.5 }
+                }], layout);
+              }
+            }else{
+              document.getElementById("indiv-plots").style.visibility = 'hidden';
+              document.getElementById("indiv-plots").style.height = '0px';
+              document.getElementById("total-plots").style.visibility = 'visible';
+              document.getElementById("total-plots").style.height = 'fit-content';
+
+              const ds0_hist_int = document.getElementById('ds0-plot-int');
+              const ds0_hist_eas = document.getElementById('ds0-plot-eas');
+              const ds0_hist_per = document.getElementById('ds0-plot-per');
+              const ds0_hist_tru = document.getElementById('ds0-plot-tru');
+              const ds0_hist_cur = document.getElementById('ds0-plot-cur');
+
+              const ds1_hist_int = document.getElementById('ds1-plot-int');
+              const ds1_hist_eas = document.getElementById('ds1-plot-eas');
+              const ds1_hist_per = document.getElementById('ds1-plot-per');
+              const ds1_hist_tru = document.getElementById('ds1-plot-tru');
+              const ds1_hist_cur = document.getElementById('ds1-plot-cur');
+
+              const ds2_hist_int = document.getElementById('ds2-plot-int');
+              const ds2_hist_eas = document.getElementById('ds2-plot-eas');
+              const ds2_hist_per = document.getElementById('ds2-plot-per');
+              const ds2_hist_tru = document.getElementById('ds2-plot-tru');
+              const ds2_hist_cur = document.getElementById('ds2-plot-cur');
+
+              const ds3_hist_int = document.getElementById('ds3-plot-int');
+              const ds3_hist_eas = document.getElementById('ds3-plot-eas');
+              const ds3_hist_per = document.getElementById('ds3-plot-per');
+              const ds3_hist_tru = document.getElementById('ds3-plot-tru');
+              const ds3_hist_cur = document.getElementById('ds3-plot-cur');
+
+              let hists = [
+                [ds0_hist_int, ds0_hist_eas, ds0_hist_per, ds0_hist_tru, ds0_hist_cur],
+                [ds1_hist_int, ds1_hist_eas, ds1_hist_per, ds1_hist_tru, ds1_hist_cur],
+                [ds2_hist_int, ds2_hist_eas, ds2_hist_per, ds2_hist_tru, ds2_hist_cur],
+                [ds3_hist_int, ds3_hist_eas, ds3_hist_per, ds3_hist_tru, ds3_hist_cur],
+              ];
+
+              for(let j=0; j<4; j++){
+                for(let i=0; i<5; i++){
+                  data_ds = dss[j][cats[i]];
+                  data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
+                  Plotly.newPlot(hists[j][i], [{
+                    x: data_condition,
+                    type: 'histogram',
+                    opacity: 0.5,
+                    autobinx: false,
+                    histnorm: "count",
+                    marker:{ color: 'green' },
+                    xbins: { end: 3.5, size: 1, start: -3.5 }
+                  }], layout);
+                }
+              }
             }
           }
 
           function changeLists(){
-            for(let j=0; j<lists.length; j++){
-              for(let i=0; i<3; i++){
-                lists[j][i].innerHTML = "";
-              }
-            }
-            let list_arr = [[], [], [], [], []];
+            const lists = [
+              [
+                document.getElementById('list_int-3'),
+                document.getElementById('list_int0'),
+                document.getElementById('list_int3')
+              ],
+              [
+                document.getElementById('list_eas-3'),
+                document.getElementById('list_eas0'),
+                document.getElementById('list_eas3')
+              ],
+              [
+                document.getElementById('list_per-3'),
+                document.getElementById('list_per0'),
+                document.getElementById('list_per3')
+              ],
+              [
+                document.getElementById('list_tru-3'),
+                document.getElementById('list_tru0'),
+                document.getElementById('list_tru3')
+              ],
+              [
+                document.getElementById('list_cur-3'),
+                document.getElementById('list_cur0'),
+                document.getElementById('list_cur3')
+              ],
+            ]
 
-            for(let j=0; j<ucss.length; j++){
-              for(let i=0; i<ucss[j].length; i++){
-                if(ucss[j][i].DS == ds){
-                  if(condition == 0 && ucss[j][i].DS_Task.includes('100') && ucss[j][i].DS_Task.includes('101')){
-                    list_arr[j].push([
-                      "<li>" + String(ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score
-                    ])
-                  }else if(condition == 1 && ucss[j][i].DS_Task.includes('100') && ucss[j][i].DS_Task.includes('110')){
-                    list_arr[j].push([
-                      "<li>" + String(ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score
-                    ])
-                  }else if(condition == 2 && ucss[j][i].DS_Task.includes('101') && ucss[j][i].DS_Task.includes('110')){
-                    list_arr[j].push([
-                      "<li>" + String(ucss[j][i].FirstTask==101?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==101?ucss[j][i].score:-ucss[j][i].score
-                    ])
-                  }
+            if(ds<4){
+              for(let j=0; j<lists.length; j++){
+                for(let i=0; i<3; i++){
+                  lists[j][i].innerHTML = "";
                 }
               }
-              list_arr[j].sort((a, b)=>{
-                return b[1]-a[1];
-              });
-              for(let i=0; i<list_arr[j].length; i++){
-                let temp = list_arr[j][i][1]<0?0:list_arr[j][i][1]==0?1:2;
-                lists[j][temp].innerHTML += list_arr[j][i][0];
+              let list_arr = [[], [], [], [], []];
+
+              for(let j=0; j<ucss.length; j++){
+                for(let i=0; i<ucss[j].length; i++){
+                  if(ucss[j][i].DS == ds){
+                    if(condition == 0 && ucss[j][i].DS_Task.includes('100') && ucss[j][i].DS_Task.includes('101')){
+                      list_arr[j].push([
+                        "<li>" + String(ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score
+                      ])
+                    }else if(condition == 1 && ucss[j][i].DS_Task.includes('100') && ucss[j][i].DS_Task.includes('110')){
+                      list_arr[j].push([
+                        "<li>" + String(ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==100?ucss[j][i].score:-ucss[j][i].score
+                      ])
+                    }else if(condition == 2 && ucss[j][i].DS_Task.includes('101') && ucss[j][i].DS_Task.includes('110')){
+                      list_arr[j].push([
+                        "<li>" + String(ucss[j][i].FirstTask==101?ucss[j][i].score:-ucss[j][i].score) + ": " + ucss[j][i].comment + "</li>", ucss[j][i].FirstTask==101?ucss[j][i].score:-ucss[j][i].score
+                      ])
+                    }
+                  }
+                }
+                list_arr[j].sort((a, b)=>{
+                  return b[1]-a[1];
+                });
+                for(let i=0; i<list_arr[j].length; i++){
+                  let temp = list_arr[j][i][1]<0?0:list_arr[j][i][1]==0?1:2;
+                  lists[j][temp].innerHTML += list_arr[j][i][0];
+                }
+              }
+            }else{
+              for(let j=0; j<lists.length; j++){
+                for(let i=0; i<3; i++){
+                  lists[j][i].innerHTML = "";
+                }
               }
             }
           }

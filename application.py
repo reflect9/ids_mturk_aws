@@ -38,7 +38,8 @@ def Index():
     fetched = fetchTask()
     session["DS"] = fetched[0]
     session["Task"] = fetched[1]
-    return render_template("index.html")
+    # return render_template("index.html")
+    return render_template("end.html")
 
 @application.route("/story")
 def Story():
@@ -211,15 +212,17 @@ def Assign():
     index = len(set(results)) % 12
     return str(set(results));
 
-@application.route('/reset')
-def Reset():
-    db.reset()
-    return "DB Reset"
+# @application.route('/reset')
+# def Reset():
+#     db.reset()
+#     return "DB Reset"
+#
+# @application.route('/drop')
+# def Drop():
+#     db.dropTable()
+#     return "DB Table Dropped"
 
-@application.route('/drop')
-def Drop():
-    db.dropTable()
-    return "DB Table Dropped"
+# don't want to let any other users to delete the database!
 
 @application.route('/create')
 def Create():
