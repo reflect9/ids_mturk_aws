@@ -249,7 +249,7 @@ def Board():
 
     for r in records:
         loadedJson = json.loads(r.json)
-        if loadedJson['event'] == 'log':
+        if r.Timestamp.month >= 11 and loadedJson['event'] == 'log':
             if 'M2' in loadedJson:
                 results1.append({
                     "ID": r.PersonID,
@@ -266,58 +266,120 @@ def Board():
                 # M1_3[0 if loadedJson["type"] == 100 else 1].append(loadedJson["M1-3"])
 
             elif 'UCS' in loadedJson:
-                # print(loadedJson)
-                results2.append({
-                    "ID": r.PersonID,
-                    "Timestamp": [r.Timestamp.month, r.Timestamp.day, r.Timestamp.hour],
-                    "Json": loadedJson
-                })
-                for k,v in loadedJson["UCS"].items():
-                    if 'interest' in k:
-                        UCS_int.append({
-                            "DS":loadedJson["DS"],
-                            "FirstTask":loadedJson["Task"][0],
-                            "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
-                            "score": v["col1"],
-                            "comment": v[""],
-                            "ID": r.PersonID,
-                        })
-                    elif 'easier' in k or 'easy' in k:
-                        UCS_eas.append({
-                            "DS":loadedJson["DS"],
-                            "FirstTask":loadedJson["Task"][0],
-                            "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
-                            "score": v["col1"],
-                            "comment": v[""],
-                            "ID": r.PersonID,
-                        })
-                    elif 'persuasive' in k:
-                        UCS_per.append({
-                            "DS":loadedJson["DS"],
-                            "FirstTask":loadedJson["Task"][0],
-                            "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
-                            "score": v["col1"],
-                            "comment": v[""],
-                            "ID": r.PersonID,
-                        })
-                    elif 'trustworthy' in k:
-                        UCS_tru.append({
-                            "DS":loadedJson["DS"],
-                            "FirstTask":loadedJson["Task"][0],
-                            "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
-                            "score": v["col1"],
-                            "comment": v[""],
-                            "ID": r.PersonID,
-                        })
-                    elif 'curious' in k:
-                        UCS_cur.append({
-                            "DS":loadedJson["DS"],
-                            "FirstTask":loadedJson["Task"][0],
-                            "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
-                            "score": v["col1"],
-                            "comment": v[""],
-                            "ID": r.PersonID,
-                        })
+                print(loadedJson["UCS"])
+                if loadedJson["UCS"]['Which version was<br/> <b>more interesting</b>?'][""] not in ['a', 'q', 'The 3D article was more interesting to look at but it was harder to navigate it on my own.', 'Visually this has much more impact and gets away from the tried and test 2D bar charts that people are familiar with and probably a little bored with. Version A is just more modern and uses technology better. ', 'The animations of B made it more interesting visually to watch. However, I would overall say there wasn\'t much difference between them.', 'A was more interesting because as an autistic person, the broken-apart nature of the text makes it easier for me to follow along, as opposed to large blocks of text.', 'I think they were both interesting but B caught my attention more. ', 'The new animation style makes it look more immersive and interesting.'] and r.PersonID not in [
+                    "5f6067975552dc000aa21f2a",
+                    "62e17900c4ff2316a7297ce6",
+                    "62db2644ab0a3a353c0dcb54",
+                    "615eca41d537883c96fc9eec",
+                    "5ff75af9",
+                    "5eea1be10e95520beb9fa654",
+                    "ff9c5800",
+                    "aab69097",
+                    "7d4d8032",
+                    "62a3b97d41ae082b602e815b",
+                    "5eda5ad7cee6c16590433514",
+                    "5f1c72e25a26d503c77bfdc9",
+                    "62a7c4d5266dfb89bf94fec8",
+                    "56e03d86a3b147000ac61c4c",
+                    "609140cea1442672dd2141d7",
+                    "6321d750bbac904272fcff34",
+                    "21e657ae",
+                    "f41d8579",
+                    "c9515f1c",
+                    "5ddd631f063ebd000dbe0687",
+                    "5f16f559325a640008bb9a07",
+                    "5c66d6a50d7f5f00014b8ab0",
+                    "6097f813d541b6142fae8e7f",
+                    "60a4a56df1a5ad7deb4b7e69",
+                    "5d1c9d39ff67e3000140ca87",
+                    "5d730a3cf37bfe0001ff031a",
+                    "56de005e6893b5000ce95d71",
+                    "c0994ac0",
+                    "286b04fc",
+                    "628f7669ee68aabf3930123b",
+                    "ea660b87",
+                    "5ce475232210eb00018706b3",
+                    "5c9f61562707e10001a01066",
+                    "5eb9ea35347cb51296f0c223",
+                    "5f27f6a0e13d4e05d048335f",
+                    "627e1a670e22288b334ebf9d",
+                    "edb9f5eb",
+                    "5eca55ce7b00b50119c64518",
+                    "5f8cbc5c355ea745e6cef2ca",
+                    "5c4592d7f608210001a4b0a8",
+                    "43f546ca",
+                    "616d5c54f2953f6447f27402",
+                    "5ec00f62cf12be40ea6fe344",
+                    "eaea35ef",
+                    "e0374dca",
+                    "578917da4d107800016db836",
+                    "6107acc592df914a921e2b41",
+                    "62a447d91e71bfacd2e8c006",
+                    "5ecd36302b4d3c05d4cc1ba2",
+                    "b248785e",
+                    "5cc53cf3291607001757c712",
+                    "5ac033fa68b65b00018d2c1a",
+                    "a427e7a8",
+                    "629b3b3c89d490460eacbfbc",
+                    "6287745dd285a8be832879dc",
+                    "58d0632c2fc72000011f8c57",
+                    "5f1c74f81af38d514e2a50bb",
+                    "f42b1c37",
+                    "62b1ed7447191a42db49a77f",
+                    "5c3dfadfef1d0d0001b2870e"
+                ]:
+                    results2.append({
+                        "ID": r.PersonID,
+                        "Timestamp": [r.Timestamp.month, r.Timestamp.day, r.Timestamp.hour],
+                        "Json": loadedJson
+                    })
+                    for k,v in loadedJson["UCS"].items():
+                        if 'interest' in k:
+                            UCS_int.append({
+                                "DS":loadedJson["DS"],
+                                "FirstTask":loadedJson["Task"][0],
+                                "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
+                                "score": v["col1"],
+                                "comment": v[""],
+                                "ID": r.PersonID,
+                            })
+                        elif 'easier' in k or 'easy' in k:
+                            UCS_eas.append({
+                                "DS":loadedJson["DS"],
+                                "FirstTask":loadedJson["Task"][0],
+                                "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
+                                "score": v["col1"],
+                                "comment": v[""],
+                                "ID": r.PersonID,
+                            })
+                        elif 'persuasive' in k:
+                            UCS_per.append({
+                                "DS":loadedJson["DS"],
+                                "FirstTask":loadedJson["Task"][0],
+                                "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
+                                "score": v["col1"],
+                                "comment": v[""],
+                                "ID": r.PersonID,
+                            })
+                        elif 'trustworthy' in k:
+                            UCS_tru.append({
+                                "DS":loadedJson["DS"],
+                                "FirstTask":loadedJson["Task"][0],
+                                "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
+                                "score": v["col1"],
+                                "comment": v[""],
+                                "ID": r.PersonID,
+                            })
+                        elif 'curious' in k:
+                            UCS_cur.append({
+                                "DS":loadedJson["DS"],
+                                "FirstTask":loadedJson["Task"][0],
+                                "DS_Task":str(loadedJson["DS"])+"_"+str(loadedJson["Task"][0])+"/"+str(loadedJson["Task"][1]),
+                                "score": v["col1"],
+                                "comment": v[""],
+                                "ID": r.PersonID,
+                            })
             else:
                 results3.append({
                     "ID": r.PersonID,
