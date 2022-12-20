@@ -18,11 +18,11 @@ def fetchTask():
     for r in records:
         results.append(r.PersonID)
 
-    index = len(set(results)) % 2
-    possibleVersions=[3]
-    possibleTasks = [[100, 101], [101, 100]]
+    index = len(set(results)) % 1
+    possibleVersions=[1]
+    possibleTasks = [[101, 100]]
     # possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
-    return [possibleVersions[index//2], possibleTasks[index%2]]
+    return [possibleVersions[index//1], possibleTasks[index%1]]
     # return random.sample(possibleTasks,1)[0]
 
 ################################################################
@@ -201,6 +201,7 @@ screener_answers = [
 ]
 
 screener_ids = [
+    "5f8461c7c4a37809c686303d",
     "59f8868e05d1d60001f1464d",
     "6086cab2718e3684dbc2727c",
     "5ef0c9b95817dc145532fcee",
