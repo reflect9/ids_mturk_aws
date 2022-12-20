@@ -382,13 +382,18 @@
               for(let i=0; i<5; i++){
                 data_ds = dss[ds][cats[i]];
                 data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
+                const map = data_condition.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
                 Plotly.newPlot(hists[i], [{
-                  x: data_condition,
-                  type: 'histogram',
-                  opacity: 0.5,
-                  autobinx: false,
-                  histnorm: "count",
-                  marker:{ color: 'green' },
+                  x: [...map.keys()],
+                  y: [...map.values()],
+                  type: 'bar',
+                  texttemplate: '%{y}',
+                  textposition: 'outside',
+                  textfont: {
+                    size: 12,
+                    color: '#000000'
+                  },
+                  hoverinfo: 'none',
                   xbins: { end: 3.5, size: 1, start: -3.5 }
                 }], layout);
               }
@@ -433,16 +438,25 @@
                 for(let i=0; i<5; i++){
                   data_ds = dss[j][cats[i]];
                   data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
+                  const map = data_condition.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
                   Plotly.newPlot(hists[j][i], [{
-                    x: data_condition,
-                    type: 'histogram',
-                    opacity: 0.5,
-                    autobinx: false,
-                    histnorm: "count",
-                    marker:{ color: 'green' },
+                    x: [...map.keys()],
+                    y: [...map.values()],
+                    type: 'bar',
+                    texttemplate: '%{y}',
+                    textposition: 'outside',
+                    textfont: {
+                      size: 12,
+                      color: '#000000'
+                    },
+                    hoverinfo: 'none',
                     xbins: { end: 3.5, size: 1, start: -3.5 }
                   }], layout);
                 }
+              }
+              // combined
+              for(let i=0; i<5; i++){
+
               }
             }
           }
