@@ -18,11 +18,11 @@ def fetchTask():
     for r in records:
         results.append(r.PersonID)
 
-    index = len(set(results)) % 12
-    possibleVersions=[0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
-    possibleTasks = [[100, 101], [101, 100], [100, 101], [100, 110], [100, 101], [101, 110], [110, 101], [101, 110], [110, 101], [101, 110], [110, 101], [101, 110]]
+    index = len(set(results)) % 4
+    possibleVersions=[0, 0, 1, 1]
+    possibleTasks = [[100, 101], [101, 100], [100, 101], [101, 110]]
     # possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
-    return [possibleVersions[index//1], possibleTasks[index%12]]
+    return [possibleVersions[index//1], possibleTasks[index%4]]
     # return random.sample(possibleTasks,1)[0]
 
 ################################################################
