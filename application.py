@@ -19,10 +19,10 @@ def fetchTask():
         results.append(r.PersonID)
 
     index = len(set(results)) % 4
-    possibleVersions=[0, 0, 1, 1]
-    possibleTasks = [[100, 101], [101, 100], [100, 101], [101, 110]]
+    possibleVersions=[3]
+    possibleTasks = [[100, 101], [101, 100], [110, 101], [101, 110]]
     # possibleTasks = [[100, 101], [100, 110], [101, 100], [101, 110], [110,100], [110, 101]]
-    return [possibleVersions[index//1], possibleTasks[index%4]]
+    return [possibleVersions[index//4], possibleTasks[index%4]]
     # return random.sample(possibleTasks,1)[0]
 
 ################################################################
@@ -201,6 +201,7 @@ screener_answers = [
 ]
 
 screener_ids = [
+    "5cadc3868ac2b70001db1ac6",
     "62c41fe598ab94de4d4f021e",
     "6023f94d1951e70ae21770ec",
     "5f6067975552dc000aa21f2a",
