@@ -204,6 +204,13 @@
         </div>
         <br/>
         <div style="width: fit-content; display:flex; flex-direction:row; line-height: 1.5em">
+          <div id="inter-cats-int-eas"></div>
+          <div id="inter-cats-int-per"></div>
+          <div id="inter-cats-int-tru"></div>
+          <div id="inter-cats-int-cur"></div>
+        </div>
+        <br/>
+        <div style="width: fit-content; display:flex; flex-direction:row; line-height: 1.5em">
           <ul style="font-size:16px; line-height:1.5em;">
             {% for d in data1 %}
               <li>{{ d.Json["M1-1"] }} / {{ d.Json["M2"] }} / {{ d.Json["M3"] }}</li>
@@ -427,6 +434,7 @@
               const ds3_hist_tru = document.getElementById('ds3-plot-tru');
               const ds3_hist_cur = document.getElementById('ds3-plot-cur');
 
+
               let hists = [
                 [ds0_hist_int, ds0_hist_eas, ds0_hist_per, ds0_hist_tru, ds0_hist_cur],
                 [ds1_hist_int, ds1_hist_eas, ds1_hist_per, ds1_hist_tru, ds1_hist_cur],
@@ -441,26 +449,26 @@
                   range: [-3.5, 3.5],
                   tickmode: "array",
                   tickvals: [3, 2, 1, 0, -1, -2, -3],
-                  ticktext: ['3 ', '2 ', '1 ', 'Neutral ', '1 ', '2 ', '3 ']
+                  ticktext: ['Stt ', ' ', ' ', ' ', ' ', ' ', 'Anm ']
                 },
                 yaxis2: {
                   fixedrange: true,
                   range: [-3.5, 3.5],
                   tickmode: "array",
                   tickvals: [3, 2, 1, 0, -1, -2, -3],
-                  ticktext: ['3 ', '2 ', '1 ', 'Neutral ', '1 ', '2 ', '3 ']
+                  ticktext: ['Anm ', ' ', ' ', ' ', ' ', ' ', 'Imm ']
                 },
                 yaxis3: {
                   fixedrange: true,
                   range: [-3.5, 3.5],
                   tickmode: "array",
                   tickvals: [3, 2, 1, 0, -1, -2, -3],
-                  ticktext: ['3 ', '2 ', '1 ', 'Neutral ', '1 ', '2 ', '3 ']
+                  ticktext: ['Imm ', ' ', ' ', ' ', ' ', ' ', 'Stt ']
                 },
                 xaxis: { fixedrange: true, range: [0, 40] },
                 showlegend: false,
                 autosize: false,
-                width: 500,
+                width: 400,
                 height: 400,
                 bargap: 0.1,
                 grid: {rows: 3, columns: 1},
@@ -473,7 +481,7 @@
                 }
               };
 
-              const barColors = ['rgba(204,204,204,1)', '#FC766AFF', '#783937FF', '#F1AC88FF']
+              const barColors = ['rgba(204,204,204,1)', '#F1AC88FF', '#FC766AFF', '#783937FF']
 
               for(let j=0; j<4; j++){
                 for(let i=0; i<5; i++){
@@ -547,7 +555,197 @@
                   Plotly.newPlot(hists[j][i], [data0, data1, data2], layout_grid);
                 }
               }
+
+              // heatmaps
+              const heatmap_int_eas = document.getElementById('inter-cats-int-eas');
+              const heatmap_int_per = document.getElementById('inter-cats-int-per');
+              const heatmap_int_tru = document.getElementById('inter-cats-int-tru');
+              const heatmap_int_cur = document.getElementById('inter-cats-int-cur');
+
+              let heatmaps = [
+                heatmap_int_eas,
+                heatmap_int_per,
+                heatmap_int_tru,
+                heatmap_int_cur,
+              ];
+
+              const layout_heatmap = {
+                xaxis: {
+                  title: {
+                    text: 'Curiosity',
+                    font: { size: 18 }
+                  },
+                },
+                yaxis: {
+                  title: {
+                    text: 'Interest',
+                    font: { size: 18 }
+                  },
+                },
+                width: 400,
+                height: 400,
+                autosize: true
+              };
+
+              const data_int_cur = [
+                {
+                  z: [
+                    [28, 2, 10, 6, 1, 3, 5],
+                    [0, 9, 7, 8, 0, 1, 0],
+                    [1, 3, 6, 7,  2,  0,  0],
+                    [3, 4, 5, 33, 2,  5,  1],
+                    [1, 5, 8, 13, 14, 9,  2],
+                    [1, 2, 7, 27, 38, 47, 19],
+                    [6, 1, 4, 37, 25, 58, 124],
+                  ],
+                  x: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  y: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  type: 'heatmap',
+                  zmin: 0,
+                  zmax: 170,
+                  colorscale: [
+                    [0, '#CCF381FF']
+                    [1, '#4831D4FF'],
+                  ],
+                  hoverongaps: false
+                }
+              ]
+
+              Plotly.newPlot(heatmap_int_cur, data_int_cur, layout_heatmap);
+
+              const layout_heatmap2 = {
+                xaxis: {
+                  title: {
+                    text: 'Trustworthiness',
+                    font: { size: 18 }
+                  },
+                },
+                yaxis: {
+                  title: {
+                    text: 'Interest',
+                    font: { size: 18 }
+                  },
+                },
+                width: 400,
+                height: 400,
+                autosize: true
+              };
+
+              const data_int_tru = [
+                {
+                  z: [
+                    [17,	3,	5,	28,	0,	0,	2],
+                    [3,	4,	2,	15,	1,	0,	0],
+                    [2,	3,	5,	9,	0,	0,	0],
+                    [5,	3,	8,	34,	1,	0,	2],
+                    [6,	9,	5,	30,	2,	0,	0],
+                    [6,	15,	14,	85,	13,	8,	0],
+                    [12,	7,	13,	169,	16,	16,	22],
+                  ],
+                  x: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  y: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  type: 'heatmap',
+                  zmin: 0,
+                  zmax: 170,
+                  colorscale: [
+                    [0, '#CCF381FF']
+                    [1, '#4831D4FF'],
+                  ],
+                  hoverongaps: false
+                }
+              ]
+
+              Plotly.newPlot(heatmap_int_tru, data_int_tru, layout_heatmap2);
+
+              const layout_heatmap3 = {
+                xaxis: {
+                  title: {
+                    text: 'Ease of Understanding',
+                    font: { size: 18 }
+                  },
+                },
+                yaxis: {
+                  title: {
+                    text: 'Interest',
+                    font: { size: 18 }
+                  },
+                },
+                width: 400,
+                height: 400,
+                autosize: true
+              };
+
+              const data_int_eas = [
+                {
+                  z: [
+                    [47,	2,	1,	4,	0,	0,	1],
+                    [12,	7,	1,	4,	0,	1,	0],
+                    [5,	5,	5,	4,	0,	0,	0],
+                    [17,	7,	7,	17,	1,	4,	0],
+                    [13,	13,	9,	8,	4,	5,	0],
+                    [15,	39,	12,	21,	16,	25,	13],
+                    [37,	19,	20,	38,	18,	27,	96],
+                  ],
+                  x: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  y: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  type: 'heatmap',
+                  zmin: 0,
+                  zmax: 170,
+                  colorscale: [
+                    [0, '#CCF381FF']
+                    [1, '#4831D4FF'],
+                  ],
+                  hoverongaps: false
+                }
+              ]
+
+              Plotly.newPlot(heatmap_int_eas, data_int_eas, layout_heatmap3);
+
+              const layout_heatmap4 = {
+                xaxis: {
+                  title: {
+                    text: 'Persuasiveness',
+                    font: { size: 18 }
+                  },
+                },
+                yaxis: {
+                  title: {
+                    text: 'Interest',
+                    font: { size: 18 }
+                  },
+                },
+                width: 400,
+                height: 400,
+                autosize: true
+              };
+
+              const data_int_per = [
+                {
+                  z: [
+                    [27,	4,	4,	16,	2,	0,	2],
+                    [2,	7,	4,	8,	3,	1,	0],
+                    [3,	3,	6,	6,	0,	1,	0],
+                    [2,	4,	9,	30,	3,	2,	3],
+                    [5,	6,	10,	16,	10,	2,	3],
+                    [3,	8,	14,	48,	25,	31,	12],
+                    [12,	9,	5,	55,	32,	47,	95],
+                  ],
+                  x: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  y: ['-3', '-2', '-1', '0', '1', '2', '3'],
+                  type: 'heatmap',
+                  zmin: 0,
+                  zmax: 170,
+                  colorscale: [
+                    [0, '#CCF381FF']
+                    [1, '#4831D4FF'],
+                  ],
+                  hoverongaps: false
+                }
+              ]
+
+              Plotly.newPlot(heatmap_int_per, data_int_per, layout_heatmap4);
             }
+
           }
 
           function changeLists(){
