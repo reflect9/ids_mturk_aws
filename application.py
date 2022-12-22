@@ -38,8 +38,8 @@ def Index():
     fetched = fetchTask()
     session["DS"] = fetched[0]
     session["Task"] = fetched[1]
-    return render_template("index.html")
-    # return render_template("end.html")
+    # return render_template("index.html")
+    return render_template("end.html")
 
 @application.route("/story")
 def Story():
@@ -271,10 +271,35 @@ screener_ids = [
     # "5c3dfadfef1d0d0001b2870e"
 ]
 
+screener_over50 = [
+    "60a5948b01c579f729232914",
+    "5b200bbd325d600001c041c0",
+    "623478b74666adc4ae9be6ab",
+    "5ecce432",
+    "60cee4ec871f36088fe20ff3",
+    "5b87c3f9e88caf0001b79375",
+    "0f4ff9a7",
+    "5cd310705882710018e544b0",
+    "5b200bbd325d600001c041c0",
+    "d664808b",
+    "63637d967ee8bf369c131da3",
+    "60ed501279c68ea1a313d0aa",
+    "56210effed6e5a000ac7f3a5",
+    "5c0dbb9b9166290001253342",
+    "5ba854ed7c0ebe0001272f2d",
+    "5ee85ec585a33015e839df78___",
+    "631c8e97db06f601f81bd82f",
+    "62da89f431f0bf332912796a",
+    "5dbcaecb740cc224d8d0985e",
+    "811577dc",
+]
+
 def filter(loadedJson, ID):
     if loadedJson["UCS"]['Which version was<br/> <b>more interesting</b>?'][""] in screener_answers:
         return False
     if ID in screener_ids:
+        return False
+    if ID in screener_over50:
         return False
 
     return True
