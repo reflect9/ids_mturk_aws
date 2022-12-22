@@ -149,7 +149,7 @@
           </div>
         </div>
         <div id="total-plots" style="width: 100%; display:flex; flex-direction:row; line-height: 1.5em">
-          <div style="width: 20%;">
+          <div style="width: 400px;">
             <h3> DS1 </h3>
             <h3> Interesting </h3>
             <div id="ds0-plot-int"></div>
@@ -162,7 +162,7 @@
             <h3> Curious </h3>
             <div id="ds0-plot-cur"></div>
           </div>
-          <div style="width: 20%;">
+          <div style="width: 400px;">
             <h3> DS2 </h3>
             <h3> . </h3>
             <div id="ds1-plot-int"></div>
@@ -175,7 +175,7 @@
             <h3> . </h3>
             <div id="ds1-plot-cur"></div>
           </div>
-          <div style="width: 20%;">
+          <div style="width: 400px;">
             <h3> DS3 </h3>
             <h3> . </h3>
             <div id="ds2-plot-int"></div>
@@ -188,7 +188,7 @@
             <h3> . </h3>
             <div id="ds2-plot-cur"></div>
           </div>
-          <div style="width: 20%;">
+          <div style="width: 400px;">
             <h3> DS4 </h3>
             <h3> . </h3>
             <div id="ds3-plot-int"></div>
@@ -434,29 +434,118 @@
                 [ds3_hist_int, ds3_hist_eas, ds3_hist_per, ds3_hist_tru, ds3_hist_cur],
               ];
 
+              const layout_grid = {
+                // barmode:"overlay",
+                yaxis: {
+                  fixedrange: true,
+                  range: [-3.5, 3.5],
+                  tickmode: "array",
+                  tickvals: [3, 2, 1, 0, -1, -2, -3],
+                  ticktext: ['3 ', '2 ', '1 ', 'Neutral ', '1 ', '2 ', '3 ']
+                },
+                yaxis2: {
+                  fixedrange: true,
+                  range: [-3.5, 3.5],
+                  tickmode: "array",
+                  tickvals: [3, 2, 1, 0, -1, -2, -3],
+                  ticktext: ['3 ', '2 ', '1 ', 'Neutral ', '1 ', '2 ', '3 ']
+                },
+                yaxis3: {
+                  fixedrange: true,
+                  range: [-3.5, 3.5],
+                  tickmode: "array",
+                  tickvals: [3, 2, 1, 0, -1, -2, -3],
+                  ticktext: ['3 ', '2 ', '1 ', 'Neutral ', '1 ', '2 ', '3 ']
+                },
+                xaxis: { fixedrange: true, range: [0, 40] },
+                showlegend: false,
+                autosize: false,
+                width: 500,
+                height: 400,
+                bargap: 0.1,
+                grid: {rows: 3, columns: 1},
+                margin: {
+                  l: 65,
+                  r: 110,
+                  b: 20,
+                  t: 0,
+                  pad: 4
+                }
+              };
+
+              const barColors = ['rgba(204,204,204,1)', '#FC766AFF', '#783937FF', '#F1AC88FF']
+
               for(let j=0; j<4; j++){
                 for(let i=0; i<5; i++){
                   data_ds = dss[j][cats[i]];
-                  data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
-                  const map = data_condition.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
-                  Plotly.newPlot(hists[j][i], [{
-                    x: [...map.keys()],
-                    y: [...map.values()],
+                  // data_condition = condition==0?data_ds.cond_100_101:condition==1?data_ds.cond_100_110:data_ds.cond_101_110;
+
+                  const m0 = data_ds.cond_100_101.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+                  const m1 = data_ds.cond_100_110.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+                  const m2 = data_ds.cond_101_110.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+                  const vals = [-3, -2, -1, 0, 1, 2, 3];
+                  vals.forEach(e => {
+                    if(!m0.has(e)){m0.set(e, 0)}
+                    if(!m1.has(e)){m1.set(e, 0)}
+                    if(!m2.has(e)){m2.set(e, 0)}
+                  })
+
+                  const map0 = new Map([...m0].sort((a, b) => a[0] - b[0]));
+                  const map1 = new Map([...m1].sort((a, b) => a[0] - b[0]));
+                  const map2 = new Map([...m2].sort((a, b) => a[0] - b[0]));
+
+                  const data0 = {
+                    y: [...map0.keys()],
+                    x: [...map0.values()].reverse(),
                     type: 'bar',
-                    texttemplate: '%{y}',
+                    orientation: 'h',
+                    texttemplate: '%{x}',
                     textposition: 'outside',
                     textfont: {
                       size: 12,
                       color: '#000000'
                     },
                     hoverinfo: 'none',
-                    xbins: { end: 3.5, size: 1, start: -3.5 }
-                  }], layout);
-                }
-              }
-              // combined
-              for(let i=0; i<5; i++){
+                    ybins: { end: 3.5, size: 1, start: -3.5 },
+                    marker: { color: [...map0.keys()].map(v => v > 0 ? barColors[1] : v == 0 ? barColors[0] : barColors[2]) }
+                  }
+                  const data1 = {
+                    y: [...map2.keys()],
+                    x: [...map2.values()].reverse(),
+                    xaxis: 'x',
+                    yaxis: 'y2',
+                    type: 'bar',
+                    orientation: 'h',
+                    texttemplate: '%{x}',
+                    textposition: 'outside',
+                    textfont: {
+                      size: 12,
+                      color: '#000000'
+                    },
+                    hoverinfo: 'none',
+                    ybins: { end: 3.5, size: 1, start: -3.5 },
+                    marker: { color: [...map2.keys()].map(v => v > 0 ? barColors[2] : v == 0 ? barColors[0] : barColors[3]) }
+                  }
+                  const data2 = {
+                    y: [...map1.keys()],
+                    x: [...map1.values()],
+                    xaxis: 'x',
+                    yaxis: 'y3',
+                    type: 'bar',
+                    orientation: 'h',
+                    texttemplate: '%{x}',
+                    textposition: 'outside',
+                    textfont: {
+                      size: 12,
+                      color: '#000000'
+                    },
+                    hoverinfo: 'none',
+                    ybins: { end: 3.5, size: 1, start: -3.5 },
+                    marker: { color: [...map1.keys()].map(v => v > 0 ? barColors[3] : v == 0 ? barColors[0] : barColors[1]) }
+                  }
 
+                  Plotly.newPlot(hists[j][i], [data0, data1, data2], layout_grid);
+                }
               }
             }
           }
