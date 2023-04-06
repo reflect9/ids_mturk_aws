@@ -148,58 +148,46 @@
             </div>
           </div>
         </div>
-        <div id="total-plots" style="width: 100%; display:flex; flex-direction:row; line-height: 1.5em">
-          <div style="width: 400px;">
-            <h3> DS1 </h3>
-            <h3> Interesting </h3>
-            <div id="ds0-plot-int"></div>
-            <h3> Easy to Understand </h3>
-            <div id="ds0-plot-eas"></div>
-            <h3> Persuasive </h3>
-            <div id="ds0-plot-per"></div>
-            <h3> Trustworthy </h3>
-            <div id="ds0-plot-tru"></div>
-            <h3> Curious </h3>
-            <div id="ds0-plot-cur"></div>
+        <div id="total-plots" style="width: 100%; display:flex; flex-direction:column; line-height: 1.5em">
+          <div style="font-size:16pt; margin-bottom:0px; display:flex; flex-direction:row;">
+            <div style="width:40px;"> &nbsp; </div>
+            <div style="width:300px; text-align:center;"> Interesting </div>
+            <div style="width:300px; text-align:center;"> Easy to Understand </div>
+            <div style="width:300px; text-align:center;"> Persuasive </div>
+            <div style="width:300px; text-align:center;"> Trustworthy </div>
+            <div style="width:300px; text-align:center;"> Curious </div>
           </div>
-          <div style="width: 400px;">
-            <h3> DS2 </h3>
-            <h3> . </h3>
-            <div id="ds1-plot-int"></div>
-            <h3> . </h3>
-            <div id="ds1-plot-eas"></div>
-            <h3> . </h3>
-            <div id="ds1-plot-per"></div>
-            <h3> . </h3>
-            <div id="ds1-plot-tru"></div>
-            <h3> . </h3>
-            <div id="ds1-plot-cur"></div>
+          <div style="margin-bottom:-90px; display:flex; flex-direction:row;">
+            <div style="height:270px; font-size:16pt; text-align:center; writing-mode: vertical-lr; transform: rotate(-180deg);"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DS1 </div>
+            <div class="histDiv" id="ds0-plot-int"></div>
+            <div class="histDiv" id="ds0-plot-eas"></div>
+            <div class="histDiv" id="ds0-plot-per"></div>
+            <div class="histDiv" id="ds0-plot-tru"></div>
+            <div class="histDiv" id="ds0-plot-cur"></div>
           </div>
-          <div style="width: 400px;">
-            <h3> DS3 </h3>
-            <h3> . </h3>
-            <div id="ds2-plot-int"></div>
-            <h3> . </h3>
-            <div id="ds2-plot-eas"></div>
-            <h3> . </h3>
-            <div id="ds2-plot-per"></div>
-            <h3> . </h3>
-            <div id="ds2-plot-tru"></div>
-            <h3> . </h3>
-            <div id="ds2-plot-cur"></div>
+          <div style="margin-bottom:-90px; display:flex; flex-direction:row;">
+            <div style="height:270px; font-size:16pt; text-align:center; writing-mode: vertical-lr; transform: rotate(-180deg);"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DS2 </div>
+            <div class="histDiv" id="ds1-plot-int"></div>
+            <div class="histDiv" id="ds1-plot-eas"></div>
+            <div class="histDiv" id="ds1-plot-per"></div>
+            <div class="histDiv" id="ds1-plot-tru"></div>
+            <div class="histDiv" id="ds1-plot-cur"></div>
           </div>
-          <div style="width: 400px;">
-            <h3> DS4 </h3>
-            <h3> . </h3>
-            <div id="ds3-plot-int"></div>
-            <h3> . </h3>
-            <div id="ds3-plot-eas"></div>
-            <h3> . </h3>
-            <div id="ds3-plot-per"></div>
-            <h3> . </h3>
-            <div id="ds3-plot-tru"></div>
-            <h3> . </h3>
-            <div id="ds3-plot-cur"></div>
+          <div style="margin-bottom:-90px; display:flex; flex-direction:row;">
+            <div style="height:270px; font-size:16pt; text-align:center; writing-mode: vertical-lr; transform: rotate(-180deg);"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DS3 </div>
+            <div class="histDiv" id="ds2-plot-int"></div>
+            <div class="histDiv" id="ds2-plot-eas"></div>
+            <div class="histDiv" id="ds2-plot-per"></div>
+            <div class="histDiv" id="ds2-plot-tru"></div>
+            <div class="histDiv" id="ds2-plot-cur"></div>
+          </div>
+          <div style="margin-bottom:-90px; display:flex; flex-direction:row;">
+            <div style="height:270px; font-size:16pt; text-align:center; writing-mode: vertical-lr; transform: rotate(-180deg);"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DS4 </div>
+            <div class="histDiv" id="ds3-plot-int"></div>
+            <div class="histDiv" id="ds3-plot-eas"></div>
+            <div class="histDiv" id="ds3-plot-per"></div>
+            <div class="histDiv" id="ds3-plot-tru"></div>
+            <div class="histDiv" id="ds3-plot-cur"></div>
           </div>
         </div>
         <br/>
@@ -366,10 +354,16 @@
             }
           }
 
-          const layout = {
+          const layout40 = {
             barmode:"overlay",
             xaxis: { fixedrange: true, range: [-3.5, 3.5], showticklabels: true },
             yaxis: { fixedrange: true, range: [0, 40] }
+          };
+
+          const layout50 = {
+            barmode:"overlay",
+            xaxis: { fixedrange: true, range: [-3.5, 3.5], showticklabels: true },
+            yaxis: { fixedrange: true, range: [0, 50] }
           };
 
           function drawPlots(){
@@ -402,7 +396,7 @@
                   },
                   hoverinfo: 'none',
                   xbins: { end: 3.5, size: 1, start: -3.5 }
-                }], layout);
+                }], i==3?layout50:layout40);
               }
             }else{
               document.getElementById("indiv-plots").style.visibility = 'hidden';
@@ -444,39 +438,78 @@
 
               const layout_grid = {
                 // barmode:"overlay",
-                yaxis: {
+                xaxis: {
                   fixedrange: true,
                   range: [-3.5, 3.5],
                   tickmode: "array",
                   tickvals: [3, 2, 1, 0, -1, -2, -3],
-                  ticktext: ['Stt ', ' ', ' ', ' ', ' ', ' ', 'Anm ']
+                  ticktext: ['A', ' ', ' ', ' ', ' ', ' ', 'S']
                 },
-                yaxis2: {
+                xaxis2: {
                   fixedrange: true,
                   range: [-3.5, 3.5],
                   tickmode: "array",
                   tickvals: [3, 2, 1, 0, -1, -2, -3],
-                  ticktext: ['Anm ', ' ', ' ', ' ', ' ', ' ', 'Imm ']
+                  ticktext: ['I', ' ', ' ', ' ', ' ', ' ', 'A']
                 },
-                yaxis3: {
+                xaxis3: {
                   fixedrange: true,
                   range: [-3.5, 3.5],
                   tickmode: "array",
                   tickvals: [3, 2, 1, 0, -1, -2, -3],
-                  ticktext: ['Imm ', ' ', ' ', ' ', ' ', ' ', 'Stt ']
+                  ticktext: ['S', ' ', ' ', ' ', ' ', ' ', 'I']
                 },
-                xaxis: { fixedrange: true, range: [0, 40] },
+                yaxis: { fixedrange: true, range: [0, 39] },
                 showlegend: false,
                 autosize: false,
-                width: 400,
-                height: 400,
+                width: 300,
+                height: 180,
                 bargap: 0.1,
-                grid: {rows: 3, columns: 1},
+                grid: {rows: 1, columns: 3},
                 margin: {
-                  l: 65,
-                  r: 110,
+                  l: 40,
+                  r: 0,
                   b: 20,
-                  t: 0,
+                  t: 10,
+                  pad: 4
+                }
+              };
+
+              const layout_grid2 = {
+                // barmode:"overlay",
+                xaxis: {
+                  fixedrange: true,
+                  range: [-3.5, 3.5],
+                  tickmode: "array",
+                  tickvals: [3, 2, 1, 0, -1, -2, -3],
+                  ticktext: ['A', ' ', ' ', ' ', ' ', ' ', 'S']
+                },
+                xaxis2: {
+                  fixedrange: true,
+                  range: [-3.5, 3.5],
+                  tickmode: "array",
+                  tickvals: [3, 2, 1, 0, -1, -2, -3],
+                  ticktext: ['I', ' ', ' ', ' ', ' ', ' ', 'A']
+                },
+                xaxis3: {
+                  fixedrange: true,
+                  range: [-3.5, 3.5],
+                  tickmode: "array",
+                  tickvals: [3, 2, 1, 0, -1, -2, -3],
+                  ticktext: ['S', ' ', ' ', ' ', ' ', ' ', 'I']
+                },
+                yaxis: { fixedrange: true, range: [0, 39] },
+                showlegend: false,
+                autosize: false,
+                width: 300,
+                height: 180,
+                bargap: 0.1,
+                grid: {rows: 1, columns: 3},
+                margin: {
+                  l: 40,
+                  r: 0,
+                  b: 20,
+                  t: 10,
                   pad: 4
                 }
               };
@@ -503,56 +536,58 @@
                   const map2 = new Map([...m2].sort((a, b) => a[0] - b[0]));
 
                   const data0 = {
-                    y: [...map0.keys()],
-                    x: [...map0.values()].reverse(),
+                    x: [...map0.keys()],
+                    y: [...map0.values()],
+                    xaxis: 'x1',
+                    yaxis: 'y',
                     type: 'bar',
-                    orientation: 'h',
-                    texttemplate: '%{x}',
+                    orientation: 'v',
+                    texttemplate: '%{y}',
                     textposition: 'outside',
                     textfont: {
-                      size: 12,
+                      size: 8,
                       color: '#000000'
                     },
                     hoverinfo: 'none',
-                    ybins: { end: 3.5, size: 1, start: -3.5 },
-                    marker: { color: [...map0.keys()].map(v => v > 0 ? barColors[1] : v == 0 ? barColors[0] : barColors[2]) }
+                    xbins: { end: 3.5, size: 1, start: -3.5 },
+                    marker: { color: [...map0.keys()].map(v => v < 0 ? barColors[1] : v == 0 ? barColors[0] : barColors[2]) }
                   }
                   const data1 = {
-                    y: [...map2.keys()],
-                    x: [...map2.values()].reverse(),
-                    xaxis: 'x',
-                    yaxis: 'y2',
+                    x: [...map2.keys()],
+                    y: [...map2.values()],
+                    xaxis: 'x2',
+                    yaxis: 'y',
                     type: 'bar',
-                    orientation: 'h',
-                    texttemplate: '%{x}',
+                    orientation: 'v',
+                    texttemplate: '%{y}',
                     textposition: 'outside',
                     textfont: {
-                      size: 12,
+                      size: 8,
                       color: '#000000'
                     },
                     hoverinfo: 'none',
-                    ybins: { end: 3.5, size: 1, start: -3.5 },
-                    marker: { color: [...map2.keys()].map(v => v > 0 ? barColors[2] : v == 0 ? barColors[0] : barColors[3]) }
+                    xbins: { end: 3.5, size: 1, start: -3.5 },
+                    marker: { color: [...map2.keys()].map(v => v < 0 ? barColors[2] : v == 0 ? barColors[0] : barColors[3]) }
                   }
                   const data2 = {
-                    y: [...map1.keys()],
-                    x: [...map1.values()],
-                    xaxis: 'x',
-                    yaxis: 'y3',
+                    x: [...map1.keys()],
+                    y: [...map1.values()].reverse(),
+                    xaxis: 'x3',
+                    yaxis: 'y',
                     type: 'bar',
-                    orientation: 'h',
-                    texttemplate: '%{x}',
+                    orientation: 'v',
+                    texttemplate: '%{y}',
                     textposition: 'outside',
                     textfont: {
-                      size: 12,
+                      size: 8,
                       color: '#000000'
                     },
                     hoverinfo: 'none',
-                    ybins: { end: 3.5, size: 1, start: -3.5 },
-                    marker: { color: [...map1.keys()].map(v => v > 0 ? barColors[3] : v == 0 ? barColors[0] : barColors[1]) }
+                    xbins: { end: 3.5, size: 1, start: -3.5 },
+                    marker: { color: [...map1.keys()].map(v => v < 0 ? barColors[3] : v == 0 ? barColors[0] : barColors[1]) }
                   }
 
-                  Plotly.newPlot(hists[j][i], [data0, data1, data2], layout_grid);
+                  Plotly.newPlot(hists[j][i], [data0, data1, data2], i==3?layout_grid2:layout_grid);
                 }
               }
 
