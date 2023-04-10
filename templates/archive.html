@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>IDS Archive</title>
+    <title>IDS User Study</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <style>
         html,
@@ -26,44 +26,11 @@
 
 <body>
     <!-- INTRODUCTION PART : Shown first -->
-
-    <!-- <div class="intro page">
-      <div style="position: relative; height: 890px">
-        <div style="position: absolute; text-align: center; left: calc(450px - 735px); font-size: 16pt; width: 1470px; height: 850px; border: 1mm dashed rgba(211, 220, 50, 1.0); margin: 10px 0 10px 0;">
-          <br/> Make sure this rectangle fits to your browser window
-        </div>
-      </div>
+    <div class="intro page">
+      <script>
+        document.location.href = "../story";
+      </script>
     </div>
-    <center>
-      <button onclick="start()" style="font-size:24px;">
-          Start Task
-      </button>
-    </center> -->
-
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>IDS User Study</title>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css')}}">
-      </head>
-      <body>
-    	<script src="{{ url_for('static',filename='js/index.js')}}"></script>
-
-        <div class="main">
-            <h1> Story A: ___ </h1>
-            <p> This story is blahblah </p>
-            <hr/>
-            <div class="story">
-                STORY HERE
-            </div>
-        </div>
-
-      </body>
-    </html>
 </body>
 
 
@@ -83,14 +50,14 @@
         $.getJSON('ajaxGet', reqJson, callback);
     }
 
-    // function fetchStories() {
-    //     // This method will be called once, when a new participant begins
-    //     ajaxGet({
-    //         "action": "fetchStories"
-    //     }, (data) => {
-    //         stories = data.stories;
-    //     });
-    // }
+    function fetchStories() {
+        // This method will be called once, when a new participant begins
+        ajaxGet({
+            "action": "fetchStories"
+        }, (data) => {
+            stories = data.stories;
+        });
+    }
 
 </script>
 
